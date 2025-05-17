@@ -1,6 +1,4 @@
-﻿using HFP.Application.DTO;
-using HFP.Domain.Consts;
-using HFP.Domain.Entities;
+﻿using HFP.Domain.Consts;
 using HFP.Domain.Factories.interfaces;
 using HFP.Domain.Repositories;
 using HFP.Shared.Abstractions.Commands;
@@ -24,7 +22,7 @@ namespace HFP.Application.Commands.Purchase.Handlers
         public async Task<bool> Handle(AddProductToCartCommand request, CancellationToken cancellationToken)
         {
             var transaction = await _transactionRepository
-                .GetAsync(t => t.BuyerId == request.BuyerId && t.Type == TransactionType.Invoice && t.Status == TransactionStatus.Pending, t=> t.Products);
+                .GetAsync(t => t.BuyerId == request.BuyerId && t.Type == TransactionType.Invoice && t.Status == TransactionStatus.Pending, t => t.Products);
 
             if (transaction is null)
             {
@@ -33,10 +31,14 @@ namespace HFP.Application.Commands.Purchase.Handlers
             }
 
             var product = await _productRepository.GetAsync(p => p.Id == request.ProductId);
-            if (product is null)
+            if (product is null || product.Quantity <= 0)
                 throw new BusinessException("کالا مورد نظر یافت نشد.");
 
+
             transaction.AddProduct(product);
+
+            if (product.Quantity < transaction.Products.FirstOrDefault(p => p.ProductId == request.ProductId)!.Quantity)
+                throw new BusinessException("موجودی کالای مورد نظر کافی نیست.");
 
             await _transactionRepository.UpdateTransactionAsync(transaction);
 

@@ -1,4 +1,3 @@
-// TutorialStepper.tsx
 import {
     Box,
     Button,

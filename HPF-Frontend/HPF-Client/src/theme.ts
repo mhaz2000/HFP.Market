@@ -22,7 +22,7 @@ const theme = createTheme(
         paper: '#ffffff',
       },
       primary: {
-        main: '#E87722',
+        main: '#03045e',
         contrastText: '#fff',
       },
       secondary: {
@@ -41,7 +41,7 @@ const theme = createTheme(
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            backgroundColor: '#FDF1E2',
+            backgroundColor: '#F0F4F8',
           },
         },
       },

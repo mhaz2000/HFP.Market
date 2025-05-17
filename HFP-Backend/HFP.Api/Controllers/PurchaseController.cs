@@ -39,6 +39,14 @@ namespace HFP.Api.Controllers
             return BaseOk();
         }
 
+        [HttpPut]
+        public async Task<IActionResult> RemoveFromCart([FromBody] RemoveProductFromCartCommand command)
+        {
+            await _commandDispatcher.DispatchAsync(command);
+
+            return BaseOk();
+        }
+
         [HttpGet("{buyerId}")]
         public async Task<ActionResult<IEnumerable<ProductTransactionDto>>> GetInvoice(string buyerId)
         {

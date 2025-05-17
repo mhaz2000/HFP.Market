@@ -10,11 +10,9 @@ namespace HFP.Application.Commands.Transaction.Handlers
     {
         private readonly IProductRepository _productRepository;
         private readonly ITransactionRepository _transactionRepository;
-        private readonly IProductFactory _factory;
 
-        public UpdateProductAvailablityCommandHandler(IProductFactory factory, IProductRepository productRepository, ITransactionRepository transactionRepository)
+        public UpdateProductAvailablityCommandHandler(IProductRepository productRepository, ITransactionRepository transactionRepository)
         {
-            _factory = factory;
             _productRepository = productRepository;
             _transactionRepository = transactionRepository;
         }

@@ -1,6 +1,6 @@
 import { Card, CardMedia, CardContent, Typography } from '@mui/material';
 import { Product } from '../types/product';
-import defaultImage from '../assets/Default Product Images.png'
+import defaultImage from '../assets/images/Default Product Images.png'
 
 interface Props {
   product: Product;

@@ -54,6 +54,22 @@ namespace HFP.Domain.Entities
                 _products.FirstOrDefault(r => r.ProductId == product.Id)!.Quantity++;
             else
                 _products.Add(new ProductTransaction(product.Id, Id, product, this, 1));
+        }
+
+        public void RemoveProduct(Product product)
+        {
+            if (product == null)
+                throw new BusinessException("کالا یافت نشد.");
+
+            var productTransaction = Products.FirstOrDefault(r => r.ProductId == product.Id);
+
+            if (productTransaction is null)
+                throw new BusinessException("کالا در سبد خرید یافت نشد.");
+
+            if (productTransaction.Quantity == 1)
+                _products.Remove(productTransaction);
+            else
+                productTransaction.Quantity--;
 
         }
     }

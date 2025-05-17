@@ -11,7 +11,6 @@ const Login = () => {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      bgcolor="background.default"
     >
       <Card sx={{ p: 4, width: '100%', maxWidth: 500 }}>
         <Box display="flex" justifyContent="center" mb={1}>

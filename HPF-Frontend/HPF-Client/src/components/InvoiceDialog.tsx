@@ -10,12 +10,15 @@ import {
   CircularProgress,
   Divider
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import RemoveIcon from '@mui/icons-material/Remove';
-import defaultImage from '../assets/Default Product Images.png';
+import AddIcon from '@mui/icons-material/Add';
+
+import defaultImage from '..//assets/images/Default Product Images.png';
 import { InvoiceItem } from '../types/invoice';
-import { getInvoice } from '../api/transaction';
+import { addProductToInvoice, getInvoice, removeProductFromInvoice } from '../api/transaction';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 interface FancyDialogProps {
   open: boolean;
@@ -33,8 +36,33 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
     enabled: !!buyerId && open,
   });
 
+  const { mutate: addProduct } = useMutation<string, Error, { buyerId: string; productId: string }>({
+    mutationFn: addProductToInvoice,
+    onSuccess: () => {
+      refetch()
+    },
+    onError: (error: any) => {
+      toast.error(error.response.data.Message);
+    },
+  });
+
+  const { mutate: removeProduct } = useMutation<string, Error, { buyerId: string; productId: string }>({
+    mutationFn: removeProductFromInvoice,
+    onSuccess: () => {
+      refetch()
+    },
+    onError: (error: any) => {
+      toast.error(error.response.data.Message);
+    },
+  });
+
   const handleReduce = (productId: string) => {
-    console.log(`Reduce quantity of product: ${productId}`);
+    removeProduct({ buyerId, productId })
+
+  };
+
+  const handleAdd = (productId: string) => {
+    addProduct({ buyerId, productId })
   };
 
 
@@ -99,12 +127,21 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
                   </Box>
                 </Box>
 
-                <IconButton
-                  color="primary"
-                  onClick={() => handleReduce(item.productId)}
-                >
-                  <RemoveIcon />
-                </IconButton>
+                <Box display={'flex'}>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleReduce(item.productId)}
+                  >
+                    <RemoveIcon />
+                  </IconButton>
+
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleAdd(item.productId)}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                </Box>
               </Box>
             ))}
 
