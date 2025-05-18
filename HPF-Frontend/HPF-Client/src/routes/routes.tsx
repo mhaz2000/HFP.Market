@@ -10,6 +10,8 @@ import NewProductPage from '../pages/dashboard/products/NewProduct';
 import ProductsTable from '../pages/dashboard/products/Products';
 import EditProductPage from '../pages/dashboard/products/EditProductPage';
 import Tutorial from '../pages/Tutorial';
+import NotFound from '../pages/NotFound';
+import Transactions from '../pages/dashboard/transactions/Transactions';
 
 const routes: RouteObject[] = [
   {
@@ -22,7 +24,6 @@ const routes: RouteObject[] = [
       { path: 'tutorial', element: <Tutorial /> },
     ],
   },
-
   {
     path: '/dashboard',
     element: <ProtectedRoute />, // this will guard the route
@@ -44,11 +45,19 @@ const routes: RouteObject[] = [
             path: 'product/:id',
             element: <EditProductPage />
           },
+          {
+            path: '/dashboard/transactions',
+            element: <Transactions />
+          },
           // Add more dashboard routes here
         ],
       },
     ],
-  }
+  },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
 ];
 
 export default routes;

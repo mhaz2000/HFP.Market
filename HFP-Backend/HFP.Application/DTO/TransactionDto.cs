@@ -1,11 +1,10 @@
 ﻿namespace HFP.Application.DTO
 {
-    public record ProductTransactionDto
+    public record TransactionDto
     {
-        public required string ProductName { get; set; }
-        public int Quantity { get; set; }
+        public string BuyerId { get; set; }
+        public string DateTime { get; set; }
         public decimal Price { get; set; }
-        public Guid ProductId { get; set; }
-        public Guid? ProductImage { get; set; }
+        public Guid TransactionId { get; set; }
     }
 }

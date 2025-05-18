@@ -7,7 +7,14 @@ export const loginUser = async (credentials: LoginRequest): Promise<string> => {
   return data.data;
 };
 
-export const checkUserState = async (): Promise<string> => {
-  const { data } = await authorizedAxios.get<string>('Authentication/State');
-  return data;
+export const checkUserState = async (): Promise<boolean> => {
+  try {
+    const { data } = await authorizedAxios.get<string>('Authentication/State');
+    return data === 'Authenticated';
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      return false;
+    }
+    throw error;
+  }
 };

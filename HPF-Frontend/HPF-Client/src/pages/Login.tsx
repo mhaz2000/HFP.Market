@@ -1,10 +1,9 @@
 // src/pages/Login.tsx
 import { Box, Card, Typography } from '@mui/material';
 import LoginForm from '../components/authentication/LoginForm';
-import FaceIcon from '@mui/icons-material/Face';
+import logo from '/logo.png'
 
 const Login = () => {
-
   return (
     <Box
       display="flex"
@@ -14,7 +13,14 @@ const Login = () => {
     >
       <Card sx={{ p: 4, width: '100%', maxWidth: 500 }}>
         <Box display="flex" justifyContent="center" mb={1}>
-          <FaceIcon sx={{ fontSize: 60, color: 'primary.secondary' }} />
+          {/* <FaceIcon sx={{ fontSize: 60, color: 'primary.secondary' }} /> */}
+          <img
+            src={logo}
+            alt='حجت فناور پروژه'
+            width={120}
+            height={'auto'}
+            style={{ borderRadius: 8, objectFit: 'cover' }}
+          />
         </Box>
         <Typography
           variant="h5"
