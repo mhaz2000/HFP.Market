@@ -1,0 +1,79 @@
+﻿@page "/"
+@inject IHttpClientFactory ClientFactory
+
+<PageTitle>ورود</PageTitle>
+
+<div class="container">
+    <h1>وضعیت اتاق</h1>
+
+    @if (statusLoading)
+    {
+        <p>در حال بررسی وضعیت اتاق...</p>
+    }
+    else if (isOccupied == null)
+    {
+        <p class="error">خطا در بررسی وضعیت اتاق. لطفاً بعداً تلاش کنید.</p>
+    }
+    else if (isOccupied == true)
+    {
+        <div class="full-room">
+            <div class="icon">🚫</div>
+            <h2>اتاق پر است.</h2>
+            <p>لطفاً تا خروج نفر قبل منتظر بمانید.</p>
+        </div>
+    }
+    else
+    {
+        <div class="available-room">
+            <div class="icon">💳</div>
+            <h2>اتاق آزاد است!</h2>
+            <p>لطفاً کارت خود را بکشید.</p>
+            @* <input @bind="cardSwipeInput" @bind:event="oninput" placeholder="کارت خود را اینجا بکشید" autofocus /> *@
+        </div>
+    }
+</div>
+
+@code {
+    private bool statusLoading = true;
+    private bool? isOccupied = null;
+    private string cardSwipeInput = "";
+    private Timer? _timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckStatus();
+
+        // Start periodic polling every 5 seconds
+        _timer = new Timer(async _ =>
+        {
+            await InvokeAsync(CheckStatus);
+        }, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+    }
+
+    private async Task CheckStatus()
+    {
+        statusLoading = true;
+        try
+        {
+            var http = ClientFactory.CreateClient("ServerAPI");
+            var response = await http.GetFromJsonAsync<RoomStatus>("api/room/status");
+            isOccupied = response?.IsOccupied;
+        }
+        catch
+        {
+            isOccupied = null;
+        }
+        statusLoading = false;
+        StateHasChanged(); // Make sure the UI updates
+    }
+
+    public class RoomStatus
+    {
+        public bool IsOccupied { get; set; }
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+}
