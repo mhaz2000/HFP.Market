@@ -4,21 +4,28 @@ import { deleteProduct, getProducts } from '../../../api/product';
 import { Product } from '../../../types/product';
 import { ApiResponse, DefaultParams } from '../../../types/api';
 import { Button } from '@mui/material';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import DeleteConfirmDialog from '../../../components/common/DeleteConfirmDialog';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { toPersianNumber } from '../../../lib/PersianNumberConverter';
 
 const columns: Column<Product>[] = [
   { key: 'name', label: 'نام محصول' },
-  { key: 'quantity', label: 'تعداد' },
-  { key: 'price', label: 'قیمت', render: (value) => `${value.toLocaleString()} تومان` },
+  { key: 'code', label: 'کد محصول' },
+  { key: 'quantity', label: 'تعداد', render: (value) => toPersianNumber(value) },
+  { key: 'price', label: 'قیمت', render: (value) => `${toPersianNumber(value.toLocaleString())} تومان` },
+  { key: 'purchasePrice', label: 'قیمت خرید', render: (value) => `${toPersianNumber(value.toLocaleString())} تومان` },
+  { key: 'profit', label: 'سود حاصل از فروش', render: (value) => `${toPersianNumber(value.toLocaleString())} تومان` },
 ];
 
 export default function ProductsTable() {
   const navigate = useNavigate(); // Initialize useRouter to handle navigation
-
-  const [queryParams, setQueryParams] = useState<DefaultParams>({
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<Product | null>(null);
+  
+  const [queryParams] = useState<DefaultParams>({
     pageSize: 10,
     pageIndex: 0,
     search: ''
@@ -30,46 +37,34 @@ export default function ProductsTable() {
     enabled: false
   });
 
-  const [refreshKey, setRefreshKey] = useState(0);
 
   const queryClient = useQueryClient(); // To access query client for invalidating the query
 
-  const { mutate: deleteProductMutation } = useMutation({
+  
+    const { mutate: deleteProductMutation } = useMutation({
     mutationFn: deleteProduct,
     onSuccess: () => {
-      // Handle success
-      queryClient.invalidateQueries({ queryKey: ['getProducts', queryParams] })
-      toast.success('عملیات با موفقیت انجام شد.')
-
+      queryClient.invalidateQueries({ queryKey: ['getProducts', queryParams] });
+      setRefreshKey(prev => prev + 1)
+      toast.success('عملیات با موفقیت انجام شد.');
     },
     onError: (error) => {
-      toast.error(error.message)
+      toast.error(error.message);
     },
   });
-
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<Product | null>(null);
-
-
-  useEffect(() => {
-    refetch();
-  }, [queryParams, refetch]);
+  
+  const confirmDelete = useCallback(() => {
+    if (!selectedRow) return;
+    
+    deleteProductMutation(selectedRow.id);
+    setOpenDialog(false);
+    setSelectedRow(null);
+  }, [selectedRow, deleteProductMutation]);
 
   const onDelete = useCallback((row: Product) => {
     setSelectedRow(row);
     setOpenDialog(true);
   }, []);
-
-  const confirmDelete = useCallback(async () => {
-    if (!selectedRow) return;
-
-    deleteProductMutation(selectedRow.id)
-    // Close the dialog
-
-    setOpenDialog(false);
-    setSelectedRow(null)
-    setRefreshKey(prev => prev + 1);
-  }, [selectedRow]);
 
   const onEdit = useCallback((row: Product) => {
     navigate(`/dashboard/product/${row.id}`);

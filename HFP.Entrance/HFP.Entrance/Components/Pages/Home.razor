@@ -4,30 +4,32 @@
 <PageTitle>ورود</PageTitle>
 
 <div class="container">
-    <h1>وضعیت اتاق</h1>
+    <h1>فروشگاه هوشمند کوثر</h1>
+
+    <img src="logo.png" height="200"/>
 
     @if (statusLoading)
     {
-        <p>در حال بررسی وضعیت اتاق...</p>
+        <p>در حال بررسی وضعیت فروشگاه...</p>
     }
     else if (isOccupied == null)
     {
-        <p class="error">خطا در بررسی وضعیت اتاق. لطفاً بعداً تلاش کنید.</p>
+        <p class="error">خطا در بررسی وضعیت فروشگاه. لطفاً بعداً تلاش کنید.</p>
     }
     else if (isOccupied == true)
     {
         <div class="full-room">
             <div class="icon">🚫</div>
-            <h2>اتاق پر است.</h2>
+            <h2>فروشگاه پر است.</h2>
             <p>لطفاً تا خروج نفر قبل منتظر بمانید.</p>
         </div>
     }
     else
     {
         <div class="available-room">
-            <div class="icon">💳</div>
-            <h2>اتاق آزاد است!</h2>
-            <p>لطفاً کارت خود را بکشید.</p>
+            <div class="icon"></div>
+            <h2>به فروشگاه هوشمند کوثر خوش آمدید.</h2>
+            <p>لطفاً کارت خود را اسکن نمایید.</p>
             @* <input @bind="cardSwipeInput" @bind:event="oninput" placeholder="کارت خود را اینجا بکشید" autofocus /> *@
         </div>
     }
@@ -47,7 +49,7 @@
         _timer = new Timer(async _ =>
         {
             await InvokeAsync(CheckStatus);
-        }, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+        }, null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5));
     }
 
     private async Task CheckStatus()

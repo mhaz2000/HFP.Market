@@ -26,6 +26,7 @@ namespace HFP.Infrastructure
             services.AddApplication(configuration);
 
             services.AddAutoMapper(typeof(UserMappingProfile)); 
+            services.AddAutoMapper(typeof(DiscountMappingProfile)); 
 
             services.AddSingleton<LoggingMiddleware>();
 

@@ -56,7 +56,7 @@ const ProductList = () => {
         }}
       >
         {products.map((product: Product) => (
-          <Box key={product.id} sx={{ flex: '1 1 300px' }}>
+          <Box key={product.id} display={'flex'} justifyContent={'center'} sx={{ flex: '1 1 300px' }}>
             <ProductCard product={product} />
           </Box>
         ))}

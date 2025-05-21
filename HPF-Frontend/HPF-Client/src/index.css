@@ -1,5 +1,29 @@
 body {
   direction: rtl;
-  font-family: 'Roboto', sans-serif;
+  font-family: "IRANSans", "Vazirmatn", "Roboto", "Arial", sans-serif;
   margin: 0;
+    font-feature-settings: 'ss02' on; /* Depends on font support */
+  direction: rtl;
+}
+
+/* Add this to your CSS/SCSS file */
+.custom-date-input {
+  width: 100%;
+  padding: 16.5px 14px; /* match MUI TextField padding */
+  font-size: 1rem;
+  border: 1px solid #c4c4c4;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: "IRANSans", "Vazirmatn", "Roboto", "Arial", sans-serif;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #fff;
+  direction: rtl;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.custom-date-input:focus {
+  outline: none;
+  border-color: #1976d2; /* MUI primary blue */
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.25);
 }

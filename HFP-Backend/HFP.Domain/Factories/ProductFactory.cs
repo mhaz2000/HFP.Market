@@ -6,27 +6,31 @@ namespace HFP.Domain.Factories
 {
     public class ProductFactory : IProductFactory
     {
-        public Product Create(ProductName productName, ProductQuantity quantity, ProductPrice price, Guid? image)
+        public Product Create(ProductName productName, ProductCode code, ProductQuantity quantity, ProductPrice price, ProductPrice purchasePrice, Guid? image)
         {
             var productNameValue = ProductName.Create(productName);
             var quantityValue = ProductQuantity.Create(quantity);
+            var productCodeValue = ProductCode.Create(code);
             var priceValue = ProductPrice.Create(price);
+            var purchasePriceValue = ProductPrice.Create(purchasePrice);
 
-            return new Product(productName, quantity, priceValue, image);
+            return new Product(productName, productCodeValue, quantity, priceValue, purchasePrice, image);
         }
 
-        public void Update(ProductName productName, ProductQuantity quantity, ProductPrice price, Guid? image, Product product)
+        public void Update(ProductName productName, ProductCode code, ProductQuantity quantity, ProductPrice price, ProductPrice purchasePrice, Guid? image, Product product)
         {
             var productNameValue = ProductName.Create(productName);
             var quantityValue = ProductQuantity.Create(quantity);
             var priceValue = ProductPrice.Create(price);
+            var productCodeValue = ProductCode.Create(code);
+            var purchasePriceValue = ProductPrice.Create(purchasePrice);
 
-            product.Update(productNameValue, quantityValue, price, image);
+            product.Update(productNameValue, productCodeValue, quantityValue, price, purchasePrice, image);
         }
 
         public void UpdateQuantity(ProductQuantity quantity, Product product)
         {
-            product.Update(product.Name, quantity, product.Price, product.Image);
+            product.Update(product.Name,product.Code, quantity, product.Price, product.PurchasePrice, product.Image);
         }
     }
 }

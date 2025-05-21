@@ -3,7 +3,6 @@ using HFP.Shared.Abstractions.Exceptions;
 
 namespace HFP.Domain.ValueObjects.Products
 {
-    
     public class ProductName : ValueObject
     {
         public string Value { get; }

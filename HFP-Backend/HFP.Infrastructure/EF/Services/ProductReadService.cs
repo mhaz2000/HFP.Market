@@ -13,6 +13,15 @@ namespace HFP.Infrastructure.EF.Services
         {
             _products = context.Products;
         }
+
+        public async Task<bool> CheckExistByCodeAsync(string productCode, Guid? id = null)
+        {
+            if (id is null)
+                return await _products.AnyAsync(pr => pr.Code == productCode);
+            else
+                return await _products.AnyAsync(pr => pr.Code  == productCode && pr.Id != id);
+        }
+
         public async Task<bool> CheckExistByNameAsync(string productName, Guid? id = null)
         {
             if (id is null)

@@ -22,10 +22,11 @@ namespace HFP.Application.Commands.Authentication.Handlers
 
         public async Task<string> Handle(CredentialLoginCommand command, CancellationToken cancellationToken)
         {
-            var (Username, Password, CaptchaCode, CaptchaId) = command;
+            //var (Username, Password, CaptchaCode, CaptchaId) = command;
+            var (Username, Password) = command;
 
-            if (!_captchaService.ValidateCaptcha(CaptchaId.ToString(), CaptchaCode))
-                throw new BusinessException("کپچا صحیح نمی‌باشد.");
+            //if (!_captchaService.ValidateCaptcha(CaptchaId.ToString(), CaptchaCode))
+            //    throw new BusinessException("کپچا صحیح نمی‌باشد.");
 
             var userId = await _readService.ValidateUserCredentialByUsernameAsync(Username, Password);
             if (userId is null)

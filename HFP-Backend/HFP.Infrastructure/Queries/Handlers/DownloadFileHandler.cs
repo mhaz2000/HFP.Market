@@ -8,7 +8,7 @@ namespace HFP.Infrastructure.Queries.Handlers
     {
         public async Task<FileStream> Handle(DownloadFileQuery request, CancellationToken cancellationToken)
         {
-            var path = Directory.GetCurrentDirectory() + "\\FileStorage";
+            var path = Directory.GetCurrentDirectory() + "/FileStorage";
             var filePath = Path.Combine(path, $"{request.Id}.dat");
 
             if (!File.Exists(filePath))

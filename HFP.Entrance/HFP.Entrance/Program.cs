@@ -28,9 +28,18 @@ app.MapGet("/api/room/status", () =>
     return Results.Ok(new { isOccupied });
 });
 
-app.MapPost("/api/room/status", () =>
+app.MapPost("/api/room/enter/{id}", (string id) =>
 {
-    isOccupied = !isOccupied;
+    Console.WriteLine($"User entered with ID: {id}");
+
+    // Example logic:
+    isOccupied = true; // or some logic based on id
+    return Results.Ok(new { Message = $"User {id} entered.", IsOccupied = isOccupied });
+});
+
+app.MapPost("/api/room/exit/{id}", (string id) =>
+{
+    isOccupied = false;
     return Results.Ok();
 });
 

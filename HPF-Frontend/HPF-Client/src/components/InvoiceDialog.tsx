@@ -19,6 +19,7 @@ import { InvoiceItem } from '../types/invoice';
 import { addProductToInvoice, getInvoice, removeProductFromInvoice } from '../api/transaction';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { toPersianNumber } from '../lib/PersianNumberConverter';
 
 interface FancyDialogProps {
   open: boolean;
@@ -119,10 +120,10 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
                   <Box>
                     <Typography fontWeight="bold">{item.productName}</Typography>
                     <Typography variant="body2">
-                      قیمت: {item.price.toLocaleString()} تومان
+                      قیمت: {toPersianNumber(item.price.toLocaleString())} تومان
                     </Typography>
                     <Typography variant="body2">
-                      تعداد: {item.quantity}
+                      تعداد: {toPersianNumber(item.quantity)}
                     </Typography>
                   </Box>
                 </Box>
@@ -150,7 +151,7 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
             <Box display="flex" justifyContent="space-between" px={1}>
               <Typography fontWeight="bold">مبلغ کل:</Typography>
               <Typography fontWeight="bold" color="primary">
-                {totalPrice.toLocaleString()} تومان
+                {toPersianNumber(totalPrice.toLocaleString())} تومان
               </Typography>
             </Box>
           </>

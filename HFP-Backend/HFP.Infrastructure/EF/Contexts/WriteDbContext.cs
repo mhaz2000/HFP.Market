@@ -1,8 +1,9 @@
 ﻿using HFP.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using HFP.Shared.Abstractions.Domain;
-using System.Linq.Expressions;
+using HFP.Domain.ValueObjects.Transactinos;
 using HFP.Infrastructure.EF.Config;
+using HFP.Shared.Abstractions.Domain;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace HFP.Infrastructure.EF.Contexts
 {
@@ -10,9 +11,12 @@ namespace HFP.Infrastructure.EF.Contexts
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Buyer> Buyers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<DiscountBuyer> DiscountBuyers { get; set; }
         public DbSet<ProductTransaction> ProductTransactions { get; set; }
 
         public WriteDbContext(DbContextOptions<WriteDbContext> options) : base(options)

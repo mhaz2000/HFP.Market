@@ -6,7 +6,7 @@ const MainNavbar = () => {
     <AppBar position="absolute" color="primary">
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h6" component={RouterLink} to="/"  sx={{ color: 'inherit', textDecoration: 'none' }}>
-          وب‌سایت من
+        فروشگاه هوشمند کوثر
         </Typography>
         <Box>
           <Button

@@ -12,6 +12,7 @@ namespace HFP.Application
         {
             services.AddScoped<IUserFactory, UserFactory>();
             services.AddScoped<IRoleFactory, RoleFactory>();
+            services.AddScoped<IDiscountFactory, DiscountFactory>();
             services.AddScoped<IProductFactory, ProductFactory>();
             services.AddScoped<ITransactionFactory, TransactionFactory>();
 

@@ -2,8 +2,10 @@
 import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
+import useAuth from '../hooks/useAuth';
 
 export default function DashboardNavbar() {
+    const { logout } = useAuth()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -16,7 +18,7 @@ export default function DashboardNavbar() {
 
     const handleLogout = () => {
         // Add logout logic here
-        console.log('Logout clicked');
+        logout();
         handleMenuClose();
     };
 

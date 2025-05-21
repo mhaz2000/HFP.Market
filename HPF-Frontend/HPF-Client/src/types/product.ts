@@ -1,9 +1,12 @@
 export interface Product {
   id: string;
   name: string;
+  code: string;
   quantity: number;
   image: string;
   price: number;
+  purchasePrice: number;
+  profit: number | null;
 }
 
 export interface ProductData {
@@ -11,6 +14,8 @@ export interface ProductData {
   name: string;
   quantity: number;
   price: number;
+  purchasePrice: number;
+  code: string;
 }
 
 export interface ProductCreateData extends ProductData {

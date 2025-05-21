@@ -6,7 +6,7 @@ import { updateProduct, getProduct } from '../../../api/product';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function NewProductPage() {
+export default function EditProductPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate()
 
@@ -33,10 +33,12 @@ export default function NewProductPage() {
         if (!isPending && id) {
             update({
                 id,
+                code: data.code,
                 imageId: data.imageId,
                 name: data.name,
                 price: data.price,
                 quantity: data.quantity,
+                purchasePrice: data.purchasePrice
             });
         }
     };

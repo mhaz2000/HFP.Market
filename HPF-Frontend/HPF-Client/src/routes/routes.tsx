@@ -12,6 +12,9 @@ import EditProductPage from '../pages/dashboard/products/EditProductPage';
 import Tutorial from '../pages/Tutorial';
 import NotFound from '../pages/NotFound';
 import Transactions from '../pages/dashboard/transactions/Transactions';
+import DiscountsTable from '../pages/dashboard/discounts/Discounts';
+import NewDiscountPage from '../pages/dashboard/discounts/NewDiscount';
+import EditDiscountPage from '../pages/dashboard/discounts/EditDiscount';
 
 const routes: RouteObject[] = [
   {
@@ -48,6 +51,18 @@ const routes: RouteObject[] = [
           {
             path: '/dashboard/transactions',
             element: <Transactions />
+          },
+          {
+            path: '/dashboard/new-discount',
+            element: <NewDiscountPage />
+          },
+          {
+            path: '/dashboard/discounts',
+            element: <DiscountsTable />
+          },
+          {
+            path: 'discount/:id',
+            element: <EditDiscountPage />
           },
           // Add more dashboard routes here
         ],

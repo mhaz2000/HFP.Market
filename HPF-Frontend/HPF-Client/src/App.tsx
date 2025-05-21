@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import { useKioskModeLock } from './hooks/useKioskModeLock';
 
 function App() {
-  // useKioskModeLock();
+  useKioskModeLock();
   const routing = useRoutes(routes);
 
   return (

@@ -11,12 +11,16 @@ body, html {
     height: 100%;
     font-family: 'IranianSans', Tahoma, 'Segoe UI', sans-serif;
     direction: rtl;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /*background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);*/
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .container {

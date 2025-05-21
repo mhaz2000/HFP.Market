@@ -12,6 +12,22 @@ const menuItems: MenuItem[] = [
     icon: 'material-symbols:dashboard',
   },
   {
+    title: 'تخفیفات',
+    icon: 'mdi:discount',
+    children: [
+      {
+        title: 'افزودن تخفیف جدید',
+        path: '/dashboard/new-discount',
+        icon: 'mdi:subdirectory-arrow-left',
+      },
+      {
+        title: 'لیست تخفیفات',
+        path: '/dashboard/discounts',
+        icon: 'mdi:subdirectory-arrow-left',
+      }
+    ]
+  },
+  {
     title: 'محصولات',
     icon: 'material-symbols:category',
     children: [

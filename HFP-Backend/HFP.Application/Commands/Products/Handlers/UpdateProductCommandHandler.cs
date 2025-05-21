@@ -28,7 +28,10 @@ namespace HFP.Application.Commands.Products.Handlers
             if (await _readService.CheckExistByNameAsync(request.Name, product.Id))
                 throw new BusinessException("عنوان کالا تکراری است.");
 
-            _factory.Update(request.Name, request.Quantity, request.Price, request.ImageId, product);
+            if (await _readService.CheckExistByCodeAsync(request.code, product.Id))
+                throw new BusinessException("کد کالا تکراری است.");
+
+            _factory.Update(request.Name, request.code, request.Quantity, request.Price, request.purchasePrice, request.ImageId, product);
 
             await _repository.UpdateAsync(product);
         }

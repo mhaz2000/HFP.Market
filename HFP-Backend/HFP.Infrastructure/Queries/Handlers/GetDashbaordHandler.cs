@@ -21,12 +21,16 @@ namespace HFP.Infrastructure.Queries.Handlers
         public async Task<DashboardDto> Handle(GetDashboardQuery request, CancellationToken cancellationToken)
         {
             var totalProducts = await _products.Where(pr => !pr.IsDeleted).CountAsync();
-            var totalTransactions = await _transactions.CountAsync(t=> !t.IsDeleted && t.Type == TransactionType.Invoice);
+            var totalTransactions = await _transactions.CountAsync(t => !t.IsDeleted && t.Type == TransactionType.Invoice);
+            var transactions = await _transactions.Include(t => t.ProductTransactions).ThenInclude(t => t.Product)
+                .Where(t => !t.IsDeleted && t.Type == TransactionType.Invoice).ToListAsync();
+            var totalProfit = transactions.Sum(t => t.ProductTransactions.Sum(pt => (pt.Product.Price - pt.Product.PurchasePrice) * pt.Quantity));
 
             return new DashboardDto()
             {
                 TotalProducts = totalProducts,
-                TotalTransactions = totalTransactions
+                TotalTransactions = totalTransactions,
+                TotalProfit = totalProfit
             };
         }
     }

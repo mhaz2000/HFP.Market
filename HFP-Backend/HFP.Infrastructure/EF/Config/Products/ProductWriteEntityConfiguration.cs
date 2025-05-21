@@ -20,12 +20,20 @@ namespace HFP.Infrastructure.EF.Config.Users
                 .HasConversion(productName => productName.Value, productName => ProductName.Create(productName))
                 .IsRequired();
 
+            builder.Property(u => u.Code)
+                .HasConversion(productCode => productCode.Value, productCode => ProductCode.Create(productCode))
+                .IsRequired();
+
             builder.Property(u => u.Quantity)
                 .HasConversion(productQuantity => productQuantity.Value, productQuantity => ProductQuantity.Create(productQuantity))
                 .IsRequired();
 
             builder.Property(u => u.Price)
                 .HasConversion(productPrice => productPrice.Value, productPrice => ProductPrice.Create(productPrice))
+                .IsRequired();
+
+            builder.Property(u => u.PurchasePrice)
+                .HasConversion(productPurchasePrice => productPurchasePrice.Value, productPurchasePrice => ProductPrice.Create(productPurchasePrice))
                 .IsRequired();
 
             builder.HasMany(u => u.Transactions)

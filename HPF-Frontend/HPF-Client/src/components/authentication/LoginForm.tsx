@@ -7,12 +7,12 @@ import {
   IconButton,
 } from '@mui/material';
 import useAuth from '../../hooks/useAuth';
-import { useCaptcha } from '../../hooks/useCaptcha';
+// import { useCaptcha } from '../../hooks/useCaptcha';
 import { LoginRequest } from '../../types/auth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import {useState } from 'react';
+// import RefreshIcon from '@mui/icons-material/Refresh';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -22,23 +22,22 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
   } = useForm<LoginRequest>();
 
   const { login, isPending } = useAuth();
-  const { data: captchaData, refetch: refetchCaptcha } = useCaptcha();
+  // const { data: captchaData, refetch: refetchCaptcha } = useCaptcha();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const onSubmit = (data: LoginRequest) => {
-    if (!captchaData) return;
+    // if (!captchaData) return;
 
     login(
       {
         ...data,
-        captchaId: captchaData.captchaId,
+        // captchaId: captchaData.captchaId,
       },
       {
         onSuccess: () => {
@@ -50,15 +49,15 @@ const LoginForm = () => {
           const message =
             error.response?.data?.message || 'نام کاربری یا رمز عبور اشتباه است.';
           toast.error(message);
-          refetchCaptcha(); // Refresh the CAPTCHA on failure
+          // refetchCaptcha(); // Refresh the CAPTCHA on failure
         },
       }
     );
   };
 
-  useEffect(() => {
-    setValue('captchaCode', '');
-  }, [captchaData]);
+  // useEffect(() => {
+  //   setValue('captchaCode', '');
+  // }, [captchaData]);
 
   return (
     <Box
@@ -110,7 +109,7 @@ const LoginForm = () => {
         <FormHelperText error>{errors.password.message}</FormHelperText>
       )}
 
-      {captchaData && (
+      {/* {captchaData && (
         <Box display="flex" alignItems="center" gap={2}>
           <Box display="flex" alignItems="center" gap={1}>
             <img
@@ -141,7 +140,7 @@ const LoginForm = () => {
             )}
           </Box>
         </Box>
-      )}
+      )} */}
 
       <Button
         type="submit"

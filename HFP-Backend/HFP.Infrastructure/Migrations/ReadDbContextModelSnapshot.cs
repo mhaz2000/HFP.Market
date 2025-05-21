@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HFP.Infrastructure.EF.Migrations
+namespace HFP.Infrastructure.Migrations
 {
     [DbContext(typeof(ReadDbContext))]
     partial class ReadDbContextModelSnapshot : ModelSnapshot
@@ -22,11 +22,99 @@ namespace HFP.Infrastructure.EF.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.BuyerReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Buyers", (string)null);
+                });
+
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.DiscountBuyerReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BuyerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DiscountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UsageCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("DiscountId");
+
+                    b.ToTable("DiscountBuyers", (string)null);
+                });
+
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.DiscountReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("MaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsageLimitPerUser")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discounts", (string)null);
+                });
+
             modelBuilder.Entity("HFP.Infrastructure.EF.Models.ProductReadModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("Image")
                         .HasColumnType("uniqueidentifier");
@@ -39,6 +127,9 @@ namespace HFP.Infrastructure.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchasePrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
@@ -110,7 +201,7 @@ namespace HFP.Infrastructure.EF.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("type")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -164,6 +255,25 @@ namespace HFP.Infrastructure.EF.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.DiscountBuyerReadModel", b =>
+                {
+                    b.HasOne("HFP.Infrastructure.EF.Models.BuyerReadModel", "Buyer")
+                        .WithMany("DiscountBuyers")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HFP.Infrastructure.EF.Models.DiscountReadModel", "Discount")
+                        .WithMany("DiscountBuyers")
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Discount");
+                });
+
             modelBuilder.Entity("HFP.Infrastructure.EF.Models.ProductTransactionReadModel", b =>
                 {
                     b.HasOne("HFP.Infrastructure.EF.Models.ProductReadModel", "Product")
@@ -200,6 +310,16 @@ namespace HFP.Infrastructure.EF.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.BuyerReadModel", b =>
+                {
+                    b.Navigation("DiscountBuyers");
+                });
+
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.DiscountReadModel", b =>
+                {
+                    b.Navigation("DiscountBuyers");
                 });
 
             modelBuilder.Entity("HFP.Infrastructure.EF.Models.ProductReadModel", b =>

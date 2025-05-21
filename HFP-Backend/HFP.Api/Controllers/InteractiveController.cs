@@ -29,7 +29,7 @@ namespace HFP.Api.Controllers
             await _hubContext.Clients.All.SendAsync("ShowProductAnnouncement", new
             {
                 title="خوش امدید",
-                message="فروشگاه رحمان و رفقا، خوش آمدید. آیا نیاز به آموزش خرید محصول دارید؟"
+                message="فروشگاه X، خوش آمدید. آیا نیاز به آموزش خرید محصول دارید؟"
             });
 
             return Ok(new { message = "triggered." });

@@ -1,6 +1,7 @@
 import { Card, CardMedia, CardContent, Typography } from '@mui/material';
 import { Product } from '../types/product';
 import defaultImage from '../assets/images/Default Product Images.png'
+import { toPersianNumber } from '../lib/PersianNumberConverter';
 
 interface Props {
   product: Product;
@@ -10,7 +11,7 @@ const ProductCard = ({ product }: Props) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL+ 'api/files/'
 
   return (
-    <Card sx={{ maxWidth: 300, direction: 'rtl' }}>
+    <Card sx={{ minWidth:300, maxWidth: 300, direction: 'rtl' }}>
       <CardMedia
         component="img"
         height="180"
@@ -21,10 +22,10 @@ const ProductCard = ({ product }: Props) => {
       <CardContent>
         <Typography variant="h6">{product.name}</Typography>
         <Typography variant="body2" color="text.secondary">
-          تعداد موجود: {product.quantity}
+          تعداد موجود: {toPersianNumber(product.quantity)}
         </Typography>
         <Typography variant="subtitle1" color="primary" mt={1}>
-          {product.price.toLocaleString()} تومان
+          {toPersianNumber(product.price.toLocaleString())} تومان
         </Typography>
       </CardContent>
     </Card>

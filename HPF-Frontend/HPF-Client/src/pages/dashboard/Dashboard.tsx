@@ -1,8 +1,10 @@
 import { Box, Card, CardContent, Container, Typography } from "@mui/material";
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 import SyncIcon from '@mui/icons-material/Sync';
+import MoneyIcon from '@mui/icons-material/Paid';
 import { useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "../../api/dashboard";
+import { toPersianNumber } from "../../lib/PersianNumberConverter";
 
 export default function Dashboard() {
 
@@ -22,7 +24,7 @@ export default function Dashboard() {
           <Card sx={{ mb: { xs: 4, md: 0 }, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'inherit', px: '3rem', maxWidth: '500px' }}>
             <LocalGroceryStoreIcon sx={{ fontSize: '8rem' }} />
             <CardContent>
-              <Typography variant="h3" textAlign={'center'}>{isLoading ? 0 : data?.totalProducts}</Typography>
+              <Typography variant="h3" textAlign={'center'}>{isLoading ? 0 : toPersianNumber(data?.totalProducts ?? 0)}</Typography>
               <Typography variant="h5">محصول در فروشگاه</Typography>
             </CardContent>
           </Card>
@@ -30,8 +32,16 @@ export default function Dashboard() {
           <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'inherit', px: '3rem', maxWidth: '500px' }}>
             <SyncIcon sx={{ fontSize: '8rem' }} />
             <CardContent>
-              <Typography variant="h3" textAlign={'center'}>{isLoading ? 0 : data?.totalTransactions}</Typography>
+              <Typography variant="h3" textAlign={'center'}>{isLoading ? 0 : toPersianNumber(data?.totalTransactions ?? 0)}</Typography>
               <Typography variant="h5">تراکنش انجام شده</Typography>
+            </CardContent>
+          </Card>
+
+          <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'inherit', px: '3rem', maxWidth: '500px' }}>
+            <MoneyIcon sx={{ fontSize: '8rem' }} />
+            <CardContent>
+              <Typography variant="h3" textAlign={'center'}>{isLoading ? 0 : toPersianNumber(data?.totalProfit ?? 0)}</Typography>
+              <Typography variant="h5">مجموع سود حاصل از فروش</Typography>
             </CardContent>
           </Card>
         </Box>

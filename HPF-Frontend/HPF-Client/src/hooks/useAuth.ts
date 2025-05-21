@@ -1,12 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { checkUserState, loginUser } from '../api/auth';
+import { useMutation } from '@tanstack/react-query';
+import { loginUser } from '../api/auth';
 import { LoginRequest } from '../types/auth';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const useAuth = () => {
   
-  const navigate = useNavigate();
   
   
   const { mutate: login, isPending, error } = useMutation({

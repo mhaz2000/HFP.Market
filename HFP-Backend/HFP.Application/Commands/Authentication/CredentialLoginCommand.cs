@@ -2,5 +2,6 @@
 
 namespace HFP.Application.Commands.Authentication
 {
-    public record CredentialLoginCommand(string Username, string Password, string CaptchaCode, Guid CaptchaId) : ICommand<string>;
+    //public record CredentialLoginCommand(string Username, string Password, string CaptchaCode, Guid CaptchaId) : ICommand<string>;
+    public record CredentialLoginCommand(string Username, string Password) : ICommand<string>;
 }

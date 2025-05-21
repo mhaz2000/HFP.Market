@@ -4,7 +4,6 @@ using HFP.Domain.Entities;
 using HFP.Infrastructure.EF.Models;
 using System;
 using System.Globalization;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace HFP.Infrastructure.Profiles
 {

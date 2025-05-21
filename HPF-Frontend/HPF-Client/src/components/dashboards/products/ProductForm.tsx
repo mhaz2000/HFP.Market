@@ -27,7 +27,9 @@ export default function ProductForm({ onSubmit, proudct }: Props) {
     useEffect(() => {
         if (proudct) {
             setValue('name', proudct.name);
+            setValue('code', proudct.code);
             setValue('price', proudct.price);
+            setValue('purchasePrice', proudct.purchasePrice);
             setValue('quantity', proudct.quantity);
             setValue('imageId', proudct.image);
             setPreviewUrl(proudct.image ? `${baseUrl}${proudct.image}` : null); // Optional: show existing image preview
@@ -67,6 +69,16 @@ export default function ProductForm({ onSubmit, proudct }: Props) {
                 </Grid>
 
                 <Grid size={12}>
+                    <TextField
+                        label="کد محصول"
+                        fullWidth
+                        {...register('code', { required: 'کد محصول الزامی است' })}
+                        error={!!errors.code}
+                        helperText={errors.code?.message}
+                    />
+                </Grid>
+
+                <Grid size={12}>
                     <Controller
                         name="quantity"
                         control={control}
@@ -94,7 +106,28 @@ export default function ProductForm({ onSubmit, proudct }: Props) {
                         }}
                         render={({ field, fieldState }) => (
                             <NumberField
-                                label="قیمت"
+                                label="قیمت (تومان)"
+                                decimalScale={2}
+                                value={field.value ?? ''}
+                                onValueChange={(values) => field.onChange(values.floatValue)}
+                                error={!!fieldState.error}
+                                helperText={fieldState.error?.message}
+                            />
+                        )}
+                    />
+                </Grid>
+
+                                <Grid size={12}>
+                    <Controller
+                        name="purchasePrice"
+                        control={control}
+                        rules={{
+                            required: 'قیمت خرید الزامی است',
+                            min: { value: 0, message: 'قیمت خرید نمی‌تواند منفی باشد' },
+                        }}
+                        render={({ field, fieldState }) => (
+                            <NumberField
+                                label="قیمت خرید"
                                 decimalScale={2}
                                 value={field.value ?? ''}
                                 onValueChange={(values) => field.onChange(values.floatValue)}
