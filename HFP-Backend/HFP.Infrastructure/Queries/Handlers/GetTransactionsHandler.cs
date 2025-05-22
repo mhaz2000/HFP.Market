@@ -1,4 +1,9 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using HFP.Application.Commands.Transaction;
 using HFP.Application.DTO;
 using HFP.Application.Queries.Transactions;
 using HFP.Domain.Consts;
@@ -8,9 +13,6 @@ using HFP.Infrastructure.ModuleExtensions;
 using HFP.Shared.Abstractions.Queries;
 using HFP.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Globalization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HFP.Infrastructure.Queries.Handlers
 {

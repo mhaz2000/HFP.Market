@@ -5,6 +5,7 @@ export type InvoiceItem = {
     productName: string;
     productImage: string;
     productId: string;
+    productCode: string;
 }
 
 export type Transaction = {
@@ -12,4 +13,11 @@ export type Transaction = {
     dateTime: string;
     buyerId: string;
     transactionId: string;
+}
+
+export type ProfitReportData = {
+    productName: string;
+    availableQuantity: number;
+    soldQuantity: number;
+    profit: number;
 }

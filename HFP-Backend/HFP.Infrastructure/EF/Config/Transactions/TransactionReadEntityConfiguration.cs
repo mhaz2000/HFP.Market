@@ -19,12 +19,12 @@ namespace HFP.Infrastructure.EF.Config.Transactions
             builder.HasOne(ur => ur.Transaction)
                 .WithMany(u => u.ProductTransactions)
                 .HasForeignKey(ur => ur.TransactionId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(ur => ur.Product)
                 .WithMany(r => r.ProductTransactions)
                 .HasForeignKey(ur => ur.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public void Configure(EntityTypeBuilder<TransactionReadModel> builder)
@@ -34,7 +34,7 @@ namespace HFP.Infrastructure.EF.Config.Transactions
             builder.HasMany(u => u.ProductTransactions)
                 .WithOne(p => p.Transaction)
                 .HasForeignKey(ur => ur.TransactionId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasQueryFilter(p => !p.IsDeleted);
 

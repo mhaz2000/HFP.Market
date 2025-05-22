@@ -36,6 +36,13 @@ namespace HFP.Api.Controllers
             return BaseOk();
         }
 
+        [HttpPut("Apply")]
+        public async Task<IActionResult> Apply([FromBody] ApplyDiscountCommand command)
+        {
+            await _commandDispatcher.DispatchAsync(command);
+            return BaseOk();
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<DiscountDto>>> GetAll([FromQuery] GetDiscountsQuery query)
@@ -57,5 +64,7 @@ namespace HFP.Api.Controllers
             await _commandDispatcher.DispatchAsync(new DeleteDiscountCommand(id));
             return BaseOk();
         }
+
+
     }
 }

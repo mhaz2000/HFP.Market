@@ -4,14 +4,16 @@ import { useCallback, useEffect, useState } from "react";
 import { ApiResponse, DefaultParams } from "../../../types/api";
 import { useQuery } from "@tanstack/react-query";
 import { Transaction } from "../../../types/invoice";
-import { getTransactions } from "../../../api/transaction";
+import { downloadTransactionsExcel, getTransactions } from "../../../api/transaction";
 import TransactionDetailDialog from "../../../components/transactions/TransactionDetailDialog";
+import DownloadIcon from '@mui/icons-material/Download';
+import { toPersianNumber } from "../../../lib/PersianNumberConverter";
 
 
 const columns: Column<Transaction>[] = [
-    { key: 'buyerId', label: 'خریدار' },
-    { key: 'dateTime', label: 'تاریخ' },
-    { key: 'price', label: 'قیمت', render: (value) => `${value.toLocaleString()} تومان` },
+    { key: 'buyerId', label: 'خریدار', render: (value) => `${toPersianNumber(value)}` },
+    { key: 'dateTime', label: 'تاریخ', render: (value) => `${toPersianNumber(value)}` },
+    { key: 'price', label: 'قیمت', render: (value) => `${toPersianNumber(value.toLocaleString())} تومان` },
 ];
 
 export default function Transactions() {
@@ -52,6 +54,27 @@ export default function Transactions() {
 
     return (
         <>
+            <Button
+                variant="contained"
+                color="primary"
+                startIcon={<DownloadIcon />}
+                onClick={() => downloadTransactionsExcel()}
+                sx={{
+                    mb: 2,
+                    fontFamily: 'inherit',
+                    fontSize: '16px',
+                    borderRadius: '12px',
+                    padding: '8px 20px',
+                    backgroundColor: '#1976d2',
+                    boxShadow: '0 3px 5px rgba(0,0,0,0.2)',
+                    ':hover': {
+                        backgroundColor: '#115293',
+                    },
+                    direction: 'rtl'
+                }}
+            >
+                دانلود همه تراکنش‌ها
+            </Button>
             <DataTable<Transaction>
                 columns={columns}
                 fetchData={fetchData} // Pass the fetchData function to the DataTable

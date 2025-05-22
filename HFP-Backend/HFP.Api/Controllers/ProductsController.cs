@@ -60,8 +60,16 @@ namespace HFP.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPut("ProductsAvailablity")]
-        public async Task<IActionResult> UpdateProductsAvailablity([FromBody] UpdateProductAvailablityCommand command)
+        [HttpPut("TakeProducts")]
+        public async Task<IActionResult> TakeProducts([FromBody] TakeProductsCommand command)
+        {
+            await _commandDispatcher.DispatchAsync(command);
+            return BaseOk();
+        }
+
+        [AllowAnonymous]
+        [HttpPut("PutProducts")]
+        public async Task<IActionResult> PutProducts([FromBody] PutProductsCommand command)
         {
             await _commandDispatcher.DispatchAsync(command);
             return BaseOk();

@@ -1,4 +1,5 @@
 using HFP.Entrance.Components;
+using HFP.Entrance.EndPoints;
 
 bool isOccupied = true;
 int counter = 0;
@@ -12,6 +13,11 @@ builder.Services.AddHttpClient("ServerAPI", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5022");
 });
+
+builder.Services.AddHttpClient("InteractiveAPI", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5000");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,25 +29,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapGet("/api/room/status", () =>
-{
-    return Results.Ok(new { isOccupied });
-});
-
-app.MapPost("/api/room/enter/{id}", (string id) =>
-{
-    Console.WriteLine($"User entered with ID: {id}");
-
-    // Example logic:
-    isOccupied = true; // or some logic based on id
-    return Results.Ok(new { Message = $"User {id} entered.", IsOccupied = isOccupied });
-});
-
-app.MapPost("/api/room/exit/{id}", (string id) =>
-{
-    isOccupied = false;
-    return Results.Ok();
-});
+app.MapRoomEndpoints();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

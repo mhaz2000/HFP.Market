@@ -43,10 +43,21 @@ const menuItems: MenuItem[] = [
       }
     ]
   },
-  {
-    title: 'تراکنش‌ها',
-    path: '/dashboard/transactions',
+    {
+    title: 'گزارشات',
     icon: 'material-symbols:currency-exchange',
+    children: [
+      {
+        title: 'تراکنش های کاربران',
+        path: '/dashboard/transactions',
+        icon: 'mdi:subdirectory-arrow-left',
+      },
+      {
+        title: 'گزارش فروش',
+        path: '/dashboard/profit-report',
+        icon: 'mdi:subdirectory-arrow-left',
+      }
+    ]
   }
 ];
 

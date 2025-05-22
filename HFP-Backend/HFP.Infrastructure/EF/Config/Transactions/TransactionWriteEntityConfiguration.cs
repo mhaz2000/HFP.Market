@@ -15,13 +15,15 @@ namespace HFP.Infrastructure.EF.Config.Transactions
             builder.HasOne(ur => ur.Transaction)
                 .WithMany(u => u.Products)
                 .HasForeignKey(ur => ur.TransactionId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(ur => ur.Product)
                 .WithMany(r => r.Transactions)
                 .HasForeignKey(ur => ur.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Property(t => t.BuyTimePirce).IsRequired();
+            builder.Property(t => t.BuyTimePurchasePirce).IsRequired();
 
             builder.Property(u => u.Quantity)
                 .HasConversion(quantity => quantity.Value, quantity => ProductTransactionQuantity.Create(quantity))
@@ -51,7 +53,7 @@ namespace HFP.Infrastructure.EF.Config.Transactions
             builder.HasMany(u => u.Products)
                 .WithOne()
                 .HasForeignKey(ur => ur.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasQueryFilter(p => !p.IsDeleted);
 

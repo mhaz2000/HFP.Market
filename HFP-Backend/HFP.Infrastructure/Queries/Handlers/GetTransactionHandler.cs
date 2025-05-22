@@ -27,6 +27,7 @@ namespace HFP.Infrastructure.Queries.Handlers
             {
                 ProductName = s.Product.Name,
                 Price = s.Product.Price,
+                ProductCode = s.Product.Code,
                 Quantity = s.Quantity,
                 ProductId = s.ProductId,
                 ProductImage = s.Product.Image

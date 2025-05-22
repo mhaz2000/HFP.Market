@@ -18,7 +18,8 @@ namespace HFP.Infrastructure.Profiles
                 {
                     Price = tr.Product.Price,
                     ProductName = tr.Product.Name,
-                    Quantity = tr.Quantity
+                    Quantity = tr.Quantity,
+                    ProductCode = tr.Product.Code
                 });
 
             CreateMap<TransactionReadModel, TransactionDto>()

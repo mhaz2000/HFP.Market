@@ -2,15 +2,21 @@
 
 namespace HFP.Application.Commands.Transaction
 {
-    public record UpdateProductAvailablityCommand : ICommand
+    public record TakeProductsCommand : ICommand
     {
-        public string BuyerId { get; set; }
+        public required string BuyerId { get; set; }
+        public required IEnumerable<AvailableProduct> Products { get; set; }
+    }
+
+    public record PutProductsCommand : ICommand
+    {
+        public required string BuyerId { get; set; }
         public required IEnumerable<AvailableProduct> Products { get; set; }
     }
 
     public record AvailableProduct
     {
-        public Guid Id { get; set; }
+        public string Code { get; set; }
         public int Quantity { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace HFP.Application.Commands.Purchase.Handlers
             if (product is null)
                 throw new BusinessException("کالا مورد نظر یافت نشد.");
 
-            transaction.RemoveProduct(product);
+            transaction.RemoveProduct(product, 1);
 
             await _transactionRepository.UpdateTransactionAsync(transaction);
         }

@@ -30,7 +30,8 @@ namespace HFP.Infrastructure.Queries.Handlers
                 Price = s.Product.Price,
                 Quantity = s.Quantity,
                 ProductId = s.ProductId,
-                ProductImage = s.Product.Image
+                ProductImage = s.Product.Image,
+                ProductCode = s.Product.Code
             });
 
         }

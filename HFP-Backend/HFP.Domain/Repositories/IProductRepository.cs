@@ -5,6 +5,6 @@ namespace HFP.Domain.Repositories
 {
     public interface IProductRepository : IGenericRepository<Product>
     {
-        Task<IList<Product>> GetByIdsAsync(List<Guid> ids);
+        Task<IList<Product>> GetByCodesAsync(List<string> codes);
     }
 }

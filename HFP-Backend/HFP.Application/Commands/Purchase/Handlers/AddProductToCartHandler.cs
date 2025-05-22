@@ -30,14 +30,14 @@ namespace HFP.Application.Commands.Purchase.Handlers
                 await _transactionRepository.AddAsync(transaction);
             }
 
-            var product = await _productRepository.GetAsync(p => p.Id == request.ProductId);
+            var product = await _productRepository.GetAsync(p => p.Code == request.ProductCode);
             if (product is null || product.Quantity <= 0)
                 throw new BusinessException("کالا مورد نظر یافت نشد.");
 
 
-            transaction.AddProduct(product);
+            transaction.AddProduct(product, 1);
 
-            if (product.Quantity < transaction.Products.FirstOrDefault(p => p.ProductId == request.ProductId)!.Quantity)
+            if (product.Quantity < transaction.Products.FirstOrDefault(p => p.Product.Code == request.ProductCode)!.Quantity)
                 throw new BusinessException("موجودی کالای مورد نظر کافی نیست.");
 
             await _transactionRepository.UpdateTransactionAsync(transaction);

@@ -15,6 +15,7 @@ import Transactions from '../pages/dashboard/transactions/Transactions';
 import DiscountsTable from '../pages/dashboard/discounts/Discounts';
 import NewDiscountPage from '../pages/dashboard/discounts/NewDiscount';
 import EditDiscountPage from '../pages/dashboard/discounts/EditDiscount';
+import ProfitReport from '../pages/dashboard/transactions/ProfitReport';
 
 const routes: RouteObject[] = [
   {
@@ -51,6 +52,10 @@ const routes: RouteObject[] = [
           {
             path: '/dashboard/transactions',
             element: <Transactions />
+          },
+          {
+            path: '/dashboard/profit-report',
+            element: <ProfitReport />
           },
           {
             path: '/dashboard/new-discount',

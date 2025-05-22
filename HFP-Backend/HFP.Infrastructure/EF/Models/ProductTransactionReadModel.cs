@@ -7,6 +7,8 @@
         public Guid ProductId { get; set; }
         public Guid TransactionId { get; set; }
 
+        public decimal BuyTimePirce { get; set; }
+        public decimal BuyTimePurchasePirce { get; set; }
         public int Quantity { get; set; }
         public ProductReadModel Product { get; set; }
         public TransactionReadModel Transaction { get; set; }

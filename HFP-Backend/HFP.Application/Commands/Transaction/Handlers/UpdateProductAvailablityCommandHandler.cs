@@ -6,34 +6,72 @@ using HFP.Shared.Abstractions.Exceptions;
 
 namespace HFP.Application.Commands.Transaction.Handlers
 {
-    internal class UpdateProductAvailablityCommandHandler : ICommandHandler<UpdateProductAvailablityCommand>
+    internal class PutProductsHandler : ICommandHandler<PutProductsCommand>
     {
         private readonly IProductRepository _productRepository;
         private readonly ITransactionRepository _transactionRepository;
 
-        public UpdateProductAvailablityCommandHandler(IProductRepository productRepository, ITransactionRepository transactionRepository)
+        public PutProductsHandler(IProductRepository productRepository, ITransactionRepository transactionRepository)
         {
             _productRepository = productRepository;
             _transactionRepository = transactionRepository;
         }
 
-        public async Task Handle(UpdateProductAvailablityCommand request, CancellationToken cancellationToken)
+        public async Task Handle(PutProductsCommand request, CancellationToken cancellationToken)
         {
             var transaction = await _transactionRepository
-                .GetAsync(tr => tr.BuyerId == request.BuyerId && tr.Type == TransactionType.PreInvoice && tr.Status == TransactionStatus.Pending);
+                .GetWithInclueAsync(tr => tr.BuyerId == request.BuyerId && tr.Type == TransactionType.PreInvoice && tr.Status == TransactionStatus.Pending);
 
             if (transaction is null)
                 throw new BusinessException("تراکنش کاربر یافت نشد.");
 
-            var updateDict = request.Products.ToDictionary(p => p.Id);
-            var ids = updateDict.Keys.ToList();
+            var updateDict = request.Products.ToDictionary(p => p.Code);
+            var codes = updateDict.Keys.ToList();
 
-            var products = await _productRepository.GetByIdsAsync(ids);
+            var products = await _productRepository.GetByCodesAsync(codes);
 
 
             foreach (var product in products)
-                if (updateDict.TryGetValue(product.Id, out var updated))
-                    transaction.UpdateProduct(product, product.Quantity - updated.Quantity);
+                if (updateDict.TryGetValue(product.Code, out var updated))
+                    transaction.RemoveProduct(product, updated.Quantity);
+
+            if(transaction.Products.Any())
+            {
+                //Need to lock the door
+            }
+
+
+            await _transactionRepository.UpdateTransactionAsync(transaction);
+        }
+    }
+    internal class TakeProductsHandler : ICommandHandler<TakeProductsCommand>
+    {
+        private readonly IProductRepository _productRepository;
+        private readonly ITransactionRepository _transactionRepository;
+
+        public TakeProductsHandler(IProductRepository productRepository, ITransactionRepository transactionRepository)
+        {
+            _productRepository = productRepository;
+            _transactionRepository = transactionRepository;
+        }
+
+        public async Task Handle(TakeProductsCommand request, CancellationToken cancellationToken)
+        {
+            var transaction = await _transactionRepository
+                .GetWithInclueAsync(tr => tr.BuyerId == request.BuyerId && tr.Type == TransactionType.PreInvoice && tr.Status == TransactionStatus.Pending);
+
+            if (transaction is null)
+                throw new BusinessException("تراکنش کاربر یافت نشد.");
+
+            var updateDict = request.Products.ToDictionary(p => p.Code);
+            var codes = updateDict.Keys.ToList();
+
+            var products = await _productRepository.GetByCodesAsync(codes);
+
+
+            foreach (var product in products)
+                if (updateDict.TryGetValue(product.Code, out var updated))
+                    transaction.AddProduct(product, updated.Quantity);
 
             if(transaction.Products.Any())
             {

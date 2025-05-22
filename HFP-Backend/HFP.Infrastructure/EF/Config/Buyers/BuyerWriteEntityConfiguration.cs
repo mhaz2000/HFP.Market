@@ -1,4 +1,5 @@
 ﻿using HFP.Domain.Entities;
+using HFP.Domain.ValueObjects.Transactinos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,6 +11,10 @@ namespace HFP.Infrastructure.EF.Config.Buyers
         {
             builder.ToTable("Buyers");
             builder.HasKey(x => x.Id);
+
+            builder.Property(u => u.BuyerId)
+                .HasConversion(buyerId => buyerId.Value, buyerId => BuyerId.Create(buyerId))
+                .IsRequired();
 
             builder.HasMany(u => u.Discounts)
                 .WithOne()

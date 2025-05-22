@@ -35,8 +35,8 @@ export default function DiscountForm({ onSubmit, discount }: Props) {
 
         onSubmit({
             ...data,
-            startDate: `${endyear}/${endmonth}/${endday}`,
-            endDate: `${startyear}/${startmonth}/${startday}`,
+            endDate: `${endyear}/${endmonth}/${endday}`,
+            startDate: `${startyear}/${startmonth}/${startday}`,
         });
     };
 

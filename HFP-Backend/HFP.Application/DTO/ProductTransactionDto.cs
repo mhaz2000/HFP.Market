@@ -6,6 +6,7 @@
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public Guid ProductId { get; set; }
+        public required string ProductCode { get; set; }
         public Guid? ProductImage { get; set; }
     }
 }

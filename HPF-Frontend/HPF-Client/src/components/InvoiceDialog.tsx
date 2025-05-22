@@ -8,7 +8,8 @@ import {
   Typography,
   IconButton,
   CircularProgress,
-  Divider
+  Divider,
+  TextField
 } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -17,7 +18,7 @@ import AddIcon from '@mui/icons-material/Add';
 import defaultImage from '..//assets/images/Default Product Images.png';
 import { InvoiceItem } from '../types/invoice';
 import { addProductToInvoice, getInvoice, removeProductFromInvoice } from '../api/transaction';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { toPersianNumber } from '../lib/PersianNumberConverter';
 
@@ -31,13 +32,15 @@ interface FancyDialogProps {
 const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL + 'api/files/';
 
+  const [discountCode, setDiscountCode] = useState('')
+
   const { data: invoiceData, isLoading, isError, refetch } = useQuery({
     queryKey: ['invoice', buyerId],
     queryFn: () => getInvoice(buyerId),
     enabled: !!buyerId && open,
   });
 
-  const { mutate: addProduct } = useMutation<string, Error, { buyerId: string; productId: string }>({
+  const { mutate: addProduct } = useMutation<string, Error, { buyerId: string; productCode: string }>({
     mutationFn: addProductToInvoice,
     onSuccess: () => {
       refetch()
@@ -59,13 +62,19 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
 
   const handleReduce = (productId: string) => {
     removeProduct({ buyerId, productId })
-
   };
 
-  const handleAdd = (productId: string) => {
-    addProduct({ buyerId, productId })
+  const handleAdd = (productCode: string) => {
+    addProduct({ buyerId, productCode })
   };
 
+
+  useEffect(() => {
+    debugger
+    if (invoiceData?.length == 0)
+      onClose()
+
+  }, [invoiceData?.length])
 
   useEffect(() => {
     if (open) {
@@ -138,7 +147,7 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
 
                   <IconButton
                     color="primary"
-                    onClick={() => handleAdd(item.productId)}
+                    onClick={() => handleAdd(item.productCode)}
                   >
                     <AddIcon />
                   </IconButton>
@@ -158,10 +167,25 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
         )}
       </DialogContent>
 
-      <DialogActions>
-        <Button variant="contained" onClick={onClose}>
-          پرداخت
-        </Button>
+      <DialogActions sx={{ mx: 2 }}>
+        <Box width={'100%'} display={'flex'} justifyContent={'space-between'} >
+          <Box display={'flex'} gap={2}>
+            <TextField
+              label="کد تخفیف"
+              value={discountCode}
+              onChange={(event) => setDiscountCode(event.target.value)}
+            // helperText={fieldState.error?.message}
+            />
+
+            <Button variant="contained" sx={{ width: "150px" }} onClick={onClose}>
+              اعمال تخفیف
+            </Button>
+          </Box>
+          <Button variant="contained" onClick={onClose}>
+            پرداخت
+          </Button>
+
+        </Box>
       </DialogActions>
     </Dialog>
   );

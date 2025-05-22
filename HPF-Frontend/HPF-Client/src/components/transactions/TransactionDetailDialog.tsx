@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import defaultImage from '../../assets/images/Default Product Images.png';
 import { InvoiceItem } from '../../types/invoice';
 import { getTransaction } from '../../api/transaction';
+import { toPersianNumber } from '../../lib/PersianNumberConverter';
 
 interface FancyDialogProps {
   open: boolean;
@@ -78,10 +79,10 @@ const TransactionDetailDialog = ({ open, transactionId, onClose }: FancyDialogPr
                   <Box>
                     <Typography fontWeight="bold">{item.productName}</Typography>
                     <Typography variant="body2">
-                      قیمت: {item.price.toLocaleString()} تومان
+                      قیمت: {toPersianNumber(item.price.toLocaleString())} تومان
                     </Typography>
                     <Typography variant="body2">
-                      تعداد: {item.quantity}
+                      تعداد: {toPersianNumber(item.quantity)}
                     </Typography>
                   </Box>
                 </Box>
@@ -93,7 +94,7 @@ const TransactionDetailDialog = ({ open, transactionId, onClose }: FancyDialogPr
             <Box display="flex" justifyContent="space-between" px={1}>
               <Typography fontWeight="bold">مبلغ کل:</Typography>
               <Typography fontWeight="bold" color="primary">
-                {totalPrice.toLocaleString()} تومان
+                {toPersianNumber(totalPrice.toLocaleString())} تومان
               </Typography>
             </Box>
           </>

@@ -26,37 +26,18 @@ namespace HFP.Domain.Entities
             Type = type;
         }
 
-        public void UpdateProduct(Product product, int quantity)
+        public void AddProduct(Product product, int quantity)
         {
             if (product == null)
                 throw new BusinessException("کالا یافت نشد.");
 
             if (Products.Any(r => r.ProductId == product.Id))
-            {
-                if (quantity > 0)
-                    _products.FirstOrDefault(p => p.ProductId == product.Id)!.Quantity = quantity;
-                else
-                {
-                    var productTransaction = _products.FirstOrDefault(r => r.ProductId == product.Id);
-                    _products.Remove(productTransaction!);
-                }
-            }
+                _products.FirstOrDefault(r => r.ProductId == product.Id)!.Quantity += quantity;
             else if (quantity > 0)
-                _products.Add(new ProductTransaction(product.Id, Id, product, this, quantity));
+                _products.Add(new ProductTransaction(product.Id, Id, product, this, quantity, product.Price, product.PurchasePrice));
         }
 
-        public void AddProduct(Product product)
-        {
-            if (product == null)
-                throw new BusinessException("کالا یافت نشد.");
-
-            if (Products.Any(r => r.ProductId == product.Id))
-                _products.FirstOrDefault(r => r.ProductId == product.Id)!.Quantity++;
-            else
-                _products.Add(new ProductTransaction(product.Id, Id, product, this, 1));
-        }
-
-        public void RemoveProduct(Product product)
+        public void RemoveProduct(Product product, int quanity)
         {
             if (product == null)
                 throw new BusinessException("کالا یافت نشد.");
