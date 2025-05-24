@@ -17,7 +17,7 @@ const columns: Column<Discount>[] = [
   { key: 'startDate', label: 'تاریخ شروع اعتبار', render: (value) => toPersianNumber(value) },
   { key: 'endDate', label: 'تاریخ پایان اعتبار',  render: (value) => toPersianNumber(value)},
   { key: 'usageLimitPerUser', label: 'تعداد مجاز استفاده', render: (value) => toPersianNumber(value) },
-  { key: 'maxAmount', label: 'سقف مبلغ تخفیف', render: (value) => `${toPersianNumber(value.toLocaleString())} تومان` },
+  { key: 'maxAmount', label: 'سقف مبلغ تخفیف', render: (value) => value ? `${toPersianNumber(value.toLocaleString())} تومان`: 'بدون سقف' },
 ];
 
 export default function DiscountsTable() {

@@ -1,5 +1,5 @@
-import { authorizedAxios } from './axios/index';
-import { Discount, CreateDiscount, UpdateDiscount } from '../types/discount';
+import { authorizedAxios, anonymousAxios } from './axios/index';
+import { Discount, CreateDiscount, UpdateDiscount, ApplyDiscount, AppliedDiscount } from '../types/discount';
 import { ApiResponse, DefaultParams } from '../types/api';
 
 export const createDiscount = async (discountCreateData: CreateDiscount): Promise<string> => {
@@ -26,4 +26,9 @@ export const getDiscount = async (discountId: string): Promise<Discount> => {
 
 export const deleteDiscount = async (discountId: string): Promise<void> => {
   await authorizedAxios.delete(`Discounts/${discountId}`);
+};
+
+export const applyDiscount = async (discountCreateData: ApplyDiscount): Promise<AppliedDiscount> => {
+  const { data } = await anonymousAxios.put<ApiResponse<AppliedDiscount>>('Discounts/Apply', discountCreateData);
+  return data.data;
 };

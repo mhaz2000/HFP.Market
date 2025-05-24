@@ -16,3 +16,13 @@ export interface UpdateDiscount extends Discount {
  }
 
 export interface CreateDiscount extends Discount { }
+
+export interface ApplyDiscount {
+    buyerId: string,
+    code: string
+}
+
+export interface AppliedDiscount {
+    newPrice: number
+}
+

@@ -21,6 +21,7 @@ import { addProductToInvoice, getInvoice, removeProductFromInvoice } from '../ap
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { toPersianNumber } from '../lib/PersianNumberConverter';
+import { applyDiscount } from '../api/discount';
 
 interface FancyDialogProps {
   open: boolean;
@@ -32,7 +33,10 @@ interface FancyDialogProps {
 const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL + 'api/files/';
 
+  const [applyManualy, setApplyManualy] = useState(false)
   const [discountCode, setDiscountCode] = useState('')
+  const [discountResult, setDiscountResult] =
+    useState<{ newPrice: number | null, errorMessage: string }>({ newPrice: null, errorMessage: '' })
 
   const { data: invoiceData, isLoading, isError, refetch } = useQuery({
     queryKey: ['invoice', buyerId],
@@ -44,6 +48,8 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
     mutationFn: addProductToInvoice,
     onSuccess: () => {
       refetch()
+      if (discountResult.newPrice)
+        applyDiscountOnPrice({ code: discountCode, buyerId })
     },
     onError: (error: any) => {
       toast.error(error.response.data.Message);
@@ -54,11 +60,29 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
     mutationFn: removeProductFromInvoice,
     onSuccess: () => {
       refetch()
+      if (discountResult.newPrice)
+        applyDiscountOnPrice({ code: discountCode, buyerId })
     },
     onError: (error: any) => {
       toast.error(error.response.data.Message);
     },
   });
+
+  const { mutate: applyDiscountOnPrice } = useMutation({
+    mutationFn: applyDiscount,
+    onSuccess: (data) => {
+      setDiscountResult({ newPrice: data.newPrice, errorMessage: '' });
+      if (applyManualy) {
+        toast.success('کد تخفیف با موفقیت اعمال شد');
+        setApplyManualy(false)
+      }
+    },
+    onError: (error: any) => {
+      setDiscountResult({ newPrice: null, errorMessage: error.response?.data?.Message || 'خطا در اعمال کد تخفیف' });
+      toast.error(error.response?.data?.Message || 'خطا در اعمال کد تخفیف');
+    },
+  });
+
 
   const handleReduce = (productId: string) => {
     removeProduct({ buyerId, productId })
@@ -68,18 +92,36 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
     addProduct({ buyerId, productCode })
   };
 
+  const handleApplyDiscount = () => {
+    if (!discountCode) {
+      toast.warning("لطفاً کد تخفیف را وارد کنید");
+      return;
+    }
+    setApplyManualy(true)
+    applyDiscountOnPrice({ code: discountCode, buyerId });
+  };
+
+  const handlePayment = () => {
+    setDiscountCode('')
+    setDiscountResult({ newPrice: null, errorMessage: '' })
+    onClose()
+  }
 
   useEffect(() => {
-    debugger
-    if (invoiceData?.length == 0)
+    if (invoiceData?.length == 0) {
+      setDiscountCode('')
+      setDiscountResult({ newPrice: null, errorMessage: '' })
       onClose()
+    }
 
   }, [invoiceData?.length])
 
   useEffect(() => {
-    if (open) {
+    if (open)
       refetch();
-    }
+
+    if (discountResult.newPrice)
+      applyDiscountOnPrice({ code: discountCode, buyerId })
   }, [refreshKey]);
 
   const totalPrice =
@@ -159,9 +201,16 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
 
             <Box display="flex" justifyContent="space-between" px={1}>
               <Typography fontWeight="bold">مبلغ کل:</Typography>
-              <Typography fontWeight="bold" color="primary">
-                {toPersianNumber(totalPrice.toLocaleString())} تومان
-              </Typography>
+              <Box>
+                <Typography fontWeight="bold" color="primary"
+                  sx={{ textDecoration: discountResult.newPrice ? 'line-through' : 'none' }}>
+                  {toPersianNumber(totalPrice.toLocaleString())} تومان
+                </Typography>
+                {discountResult.newPrice &&
+                  <Typography sx={{ textAlign: 'end' }} fontWeight="bold" color="primary">
+                    {toPersianNumber(discountResult.newPrice.toLocaleString())} تومان
+                  </Typography>}
+              </Box>
             </Box>
           </>
         )}
@@ -174,14 +223,15 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
               label="کد تخفیف"
               value={discountCode}
               onChange={(event) => setDiscountCode(event.target.value)}
-            // helperText={fieldState.error?.message}
+              error={!!discountResult.errorMessage}
+              helperText={discountResult.errorMessage}
             />
 
-            <Button variant="contained" sx={{ width: "150px" }} onClick={onClose}>
+            <Button variant="contained" sx={{ width: "150px" }} onClick={handleApplyDiscount} disabled={isLoading}>
               اعمال تخفیف
             </Button>
           </Box>
-          <Button variant="contained" onClick={onClose}>
+          <Button variant="contained" onClick={handlePayment}>
             پرداخت
           </Button>
 

@@ -36,14 +36,14 @@ namespace HFP.Api.Controllers
             return BaseOk();
         }
 
+        [AllowAnonymous]
         [HttpPut("Apply")]
-        public async Task<IActionResult> Apply([FromBody] ApplyDiscountCommand command)
+        public async Task<ActionResult<AppliedDiscountDto>> Apply([FromBody] ApplyDiscountCommand command)
         {
-            await _commandDispatcher.DispatchAsync(command);
-            return BaseOk();
+            var result = await _commandDispatcher.DispatchAsync<ApplyDiscountCommand ,AppliedDiscountDto>(command);
+            return OkOrNotFound(result);
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<DiscountDto>>> GetAll([FromQuery] GetDiscountsQuery query)
         {

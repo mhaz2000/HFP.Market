@@ -43,6 +43,10 @@ export default function DiscountForm({ onSubmit, discount }: Props) {
 
 
     useEffect(() => {
+        const currentDate = new DateObject({ calendar: persian, locale: persian_fa });
+        setValue('startDate', `${currentDate.year}/${currentDate.month}/${currentDate.day}`);
+        setValue('endDate', `${currentDate.year}/${currentDate.month}/${currentDate.day}`);
+
         if (discount) {
             setValue('name', discount.name);
             setValue('code', discount.code);
@@ -83,7 +87,6 @@ export default function DiscountForm({ onSubmit, discount }: Props) {
                         name="maxAmount"
                         control={control}
                         rules={{
-                            required: 'سقف قیمت اعمال تخفیف الزامی است',
                             min: { value: 0, message: 'سقف قیمت اعمال تخفیف نمی‌تواند منفی باشد' },
                         }}
                         render={({ field, fieldState }) => (
