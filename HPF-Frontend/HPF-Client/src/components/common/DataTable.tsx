@@ -29,6 +29,7 @@ interface DataTableProps<T> {
     rowsPerPageOptions?: number[];
     defaultRowsPerPage?: number;
     reloadKey?: number;
+    params?: any
     renderActions?: (row: T) => React.ReactNode; // New prop
 }
 
@@ -38,6 +39,7 @@ export default function DataTable<T>({
     rowsPerPageOptions = [5, 10, 25],
     defaultRowsPerPage = 10,
     reloadKey,
+    params,
     renderActions
 }: DataTableProps<T>) {
     const [page, setPage] = useState(0);
@@ -63,12 +65,12 @@ export default function DataTable<T>({
         const fetchTableData = async () => {
             setIsLoading(true);
             try {
-                const params: DefaultParams = {
+                const defaultParams: DefaultParams = {
                     pageSize: rowsPerPage,
                     pageIndex: page,
                     search: debouncedSearch.trim(),
                 };
-                const data = await fetchData(params);
+                const data = await fetchData(params ?? defaultParams);
                 setRows(data.data);
                 setTotalCount(data.totalCount || 0);
                 setError(null);

@@ -45,6 +45,13 @@ namespace HFP.Api.Controllers
             return BaseObjectOk(data);
         }
 
+        [HttpGet("Excel")]
+        public async Task<IActionResult> GetExcel([FromQuery] GetProductsExcelQuery query)
+        {
+            var result = await _queryDispatcher.QueryAsync(query);
+            return File(result.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Transactions.xlsx");
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> Get([FromRoute] Guid id)
         {

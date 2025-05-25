@@ -11,6 +11,7 @@ using HFP.Infrastructure.EF.Contexts;
 using HFP.Infrastructure.EF.Models;
 using HFP.Infrastructure.ModuleExtensions;
 using HFP.Shared.Abstractions.Queries;
+using HFP.Shared.Helpers;
 using HFP.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,8 +28,18 @@ namespace HFP.Infrastructure.Queries.Handlers
         }
         public async Task<PaginatedResult<TransactionDto>> Handle(GetTransactionsQuery query, CancellationToken cancellationToken)
         {
+             
+            
             var dbQuery = _transactions.Include(t => t.ProductTransactions).ThenInclude(t => t.Product)
                 .Where(c => !c.IsDeleted && c.Type == TransactionType.Invoice);
+
+            if(!string.IsNullOrEmpty(query.StartDate) && !string.IsNullOrEmpty(query.EndDate))
+            {
+                var startDate = query.StartDate.ToDate(true);
+                var endDate = query.EndDate.ToDate(false);
+
+                dbQuery = dbQuery.Where(t => t.Date.Date <= endDate && t.Date.Date >= startDate);
+            }
 
             var paginatedResult = await dbQuery.AsNoTracking()
                 .ToPaginatedResultAsync<TransactionReadModel, TransactionDto>(query.PageIndex, query.PageSize, query.SortBy ?? string.Empty, _mapper);

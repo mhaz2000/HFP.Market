@@ -4,5 +4,5 @@ using HFP.Shared.Models;
 
 namespace HFP.Application.Queries.Transactions
 {
-    public record GetTransactionsQuery : PaginationQuery, IQuery<PaginatedResult<TransactionDto>>;
+    public record GetTransactionsQuery : TransactionFilter, IQuery<PaginatedResult<TransactionDto>>;
 }

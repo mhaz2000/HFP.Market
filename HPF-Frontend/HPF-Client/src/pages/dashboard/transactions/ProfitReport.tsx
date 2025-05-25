@@ -50,7 +50,7 @@ export default function ProfitReport() {
             <Button
                 variant="contained"
                 color="primary"
-                startIcon={<DownloadIcon />}
+                startIcon={<DownloadIcon sx={{ml: 1}}/>}
                 onClick={() => downloadProfitReportExcel()}
                 sx={{
                     mb: 2,

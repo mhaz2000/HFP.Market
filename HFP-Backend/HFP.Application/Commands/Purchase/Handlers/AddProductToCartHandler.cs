@@ -11,18 +11,25 @@ namespace HFP.Application.Commands.Purchase.Handlers
         private readonly ITransactionFactory _transactionFactory;
         private readonly ITransactionRepository _transactionRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IBuyerRepository _buyerRepository;
 
-        public AddProductToCartHandler(ITransactionRepository transactionRepository, ITransactionFactory transactionFactory, IProductRepository productRepository)
+        public AddProductToCartHandler(ITransactionRepository transactionRepository, ITransactionFactory transactionFactory, IProductRepository productRepository,
+            IBuyerRepository buyerRepository)
         {
             _transactionFactory = transactionFactory;
             _transactionRepository = transactionRepository;
             _productRepository = productRepository;
+            _buyerRepository = buyerRepository;
         }
 
         public async Task<bool> Handle(AddProductToCartCommand request, CancellationToken cancellationToken)
         {
             var transaction = await _transactionRepository
                 .GetAsync(t => t.BuyerId == request.BuyerId && t.Type == TransactionType.Invoice && t.Status == TransactionStatus.Pending, t => t.Products);
+
+            var buyer = await _buyerRepository.GetAsync(b => b.BuyerId == request.BuyerId);
+            if (buyer is null)
+                throw new BusinessException("خریدار یافت نشد.");
 
             if (transaction is null)
             {

@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 
-namespace HFP.Application.Helpers
+namespace HFP.Shared.Helpers
 {
-    internal static class DateHelper
+    public static class DateHelper
     {
         public static DateTime ToDate(this string date, bool isStart)
         {

@@ -1,5 +1,5 @@
 import { ApiResponse, DefaultParams } from "../types/api";
-import { InvoiceItem, ProfitReportData, Transaction } from "../types/invoice";
+import { InvoiceItem, ProfitReportData, Transaction, TransactionFilter } from "../types/invoice";
 import { anonymousAxios, authorizedAxios } from "./axios";
 
 export const getInvoice = async (buyerId: string): Promise<InvoiceItem[]> => {
@@ -17,7 +17,7 @@ export const removeProductFromInvoice = async ({ buyerId, productId }: { buyerId
   return data;
 };
 
-export const getTransactions = async (params?: DefaultParams): Promise<ApiResponse<Transaction[]>> => {
+export const getTransactions = async (params?: TransactionFilter): Promise<ApiResponse<Transaction[]>> => {
   const { data } = await authorizedAxios.get<ApiResponse<Transaction[]>>('Transactions', {
     params
   });

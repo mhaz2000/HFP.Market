@@ -1,3 +1,5 @@
+import { DateObject } from "react-multi-date-picker";
+import { DefaultParams } from "./api";
 
 export type InvoiceItem = {
     price: number;
@@ -20,4 +22,10 @@ export type ProfitReportData = {
     availableQuantity: number;
     soldQuantity: number;
     profit: number;
+}
+
+
+export interface TransactionFilter extends DefaultParams {
+    startDate?: string
+    endDate?: string
 }

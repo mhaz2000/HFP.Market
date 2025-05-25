@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import DataTable, { Column } from '../../../components/common/DataTable';
-import { deleteProduct, getProducts } from '../../../api/product';
+import { deleteProduct, downloadProductsExcel, getProducts } from '../../../api/product';
 import { Product } from '../../../types/product';
 import { ApiResponse, DefaultParams } from '../../../types/api';
 import { Button } from '@mui/material';
@@ -9,6 +9,8 @@ import DeleteConfirmDialog from '../../../components/common/DeleteConfirmDialog'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { toPersianNumber } from '../../../lib/PersianNumberConverter';
+import DownloadIcon from '@mui/icons-material/Download';
+
 
 const columns: Column<Product>[] = [
   { key: 'name', label: 'نام محصول' },
@@ -24,7 +26,7 @@ export default function ProductsTable() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedRow, setSelectedRow] = useState<Product | null>(null);
-  
+
   const [queryParams] = useState<DefaultParams>({
     pageSize: 10,
     pageIndex: 0,
@@ -40,8 +42,8 @@ export default function ProductsTable() {
 
   const queryClient = useQueryClient(); // To access query client for invalidating the query
 
-  
-    const { mutate: deleteProductMutation } = useMutation({
+
+  const { mutate: deleteProductMutation } = useMutation({
     mutationFn: deleteProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getProducts', queryParams] });
@@ -52,10 +54,10 @@ export default function ProductsTable() {
       toast.error(error.message);
     },
   });
-  
+
   const confirmDelete = useCallback(() => {
     if (!selectedRow) return;
-    
+
     deleteProductMutation(selectedRow.id);
     setOpenDialog(false);
     setSelectedRow(null);
@@ -82,6 +84,27 @@ export default function ProductsTable() {
 
   return (
     <>
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<DownloadIcon sx={{ml: 1}}/>}
+        onClick={() => downloadProductsExcel()}
+        sx={{
+          mb: 2,
+          fontFamily: 'inherit',
+          fontSize: '16px',
+          borderRadius: '12px',
+          padding: '8px 20px',
+          backgroundColor: '#1976d2',
+          boxShadow: '0 3px 5px rgba(0,0,0,0.2)',
+          ':hover': {
+            backgroundColor: '#115293',
+          },
+          direction: 'rtl'
+        }}
+      >
+        دانلود همه محصولات
+      </Button>
       <DataTable<Product>
         columns={columns}
         fetchData={fetchData} // Pass the fetchData function to the DataTable
