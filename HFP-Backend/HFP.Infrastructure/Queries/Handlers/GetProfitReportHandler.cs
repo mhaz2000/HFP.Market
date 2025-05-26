@@ -5,6 +5,7 @@ using HFP.Domain.Consts;
 using HFP.Infrastructure.EF.Contexts;
 using HFP.Infrastructure.EF.Models;
 using HFP.Shared.Abstractions.Queries;
+using HFP.Shared.Helpers;
 using HFP.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,22 +14,31 @@ namespace HFP.Infrastructure.Queries.Handlers
     internal class GetProfitReportHandler : IQueryHandler<GetProfitReportQuery, PaginatedResult<ProfitReportDto>>
     {
         private readonly DbSet<TransactionReadModel> _transactions;
-        private readonly IMapper _mapper;
-        public GetProfitReportHandler(ReadDbContext context, IMapper mapper)
+        public GetProfitReportHandler(ReadDbContext context)
         {
             _transactions = context.Transactions;
-            _mapper = mapper;
         }
         public async Task<PaginatedResult<ProfitReportDto>> Handle(GetProfitReportQuery request, CancellationToken cancellationToken)
         {
             var dbQuery = _transactions.Include(t => t.ProductTransactions).ThenInclude(t => t.Product)
-                .Where(c => !c.IsDeleted && c.Type == TransactionType.Invoice).SelectMany(s => s.ProductTransactions).AsNoTracking();
+                .Where(c => !c.IsDeleted && c.Type == TransactionType.Invoice);
+
+            if (!string.IsNullOrEmpty(request.StartDate) && !string.IsNullOrEmpty(request.EndDate))
+            {
+                var startDate = request.StartDate.ToDate(true);
+                var endDate = request.EndDate.ToDate(false);
+
+                dbQuery = dbQuery.Where(t => t.Date.Date <= endDate && t.Date.Date >= startDate);
+            }
+
+            var newQuery = dbQuery.SelectMany(s => s.ProductTransactions).AsNoTracking();
 
             if (!string.IsNullOrEmpty(request.Search))
-                dbQuery = dbQuery
+                newQuery = newQuery
                     .Where(u => Microsoft.EntityFrameworkCore.EF.Functions.Like(u.Product.Name, $"%{request.Search}%"));
 
-            var report = dbQuery.AsEnumerable()
+
+            var report = newQuery.AsEnumerable()
                 .Select(t => new
                 {
                     t.BuyTimePirce,
@@ -50,7 +60,7 @@ namespace HFP.Infrastructure.Queries.Handlers
                 .Take(request.PageSize)
                 .ToList();
 
-            return new PaginatedResult<ProfitReportDto>(items, totalCount, request.PageSize, request.PageIndex);
+            return await Task.FromResult(new PaginatedResult<ProfitReportDto>(items, totalCount, request.PageSize, request.PageIndex));
         }
     }
 }

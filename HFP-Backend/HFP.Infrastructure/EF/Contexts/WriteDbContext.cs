@@ -17,7 +17,9 @@ namespace HFP.Infrastructure.EF.Contexts
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<DiscountBuyer> DiscountBuyers { get; set; }
+        public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
         public DbSet<ProductTransaction> ProductTransactions { get; set; }
+        public DbSet<PurchaseInvoiceItem> PurchaseInvoiceItems { get; set; }
 
         public WriteDbContext(DbContextOptions<WriteDbContext> options) : base(options)
         {

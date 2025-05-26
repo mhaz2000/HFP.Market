@@ -26,6 +26,7 @@ namespace HFP.Infrastructure.EF.Repositories
                 else
                     await _context.ProductTransactions.AddAsync(item);
             }
+            transaction.Date = DateTime.Now;
             _context.Update(transaction);
 
             await _context.SaveChangesAsync();

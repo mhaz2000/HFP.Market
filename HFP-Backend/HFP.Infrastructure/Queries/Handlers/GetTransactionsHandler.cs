@@ -31,7 +31,7 @@ namespace HFP.Infrastructure.Queries.Handlers
              
             
             var dbQuery = _transactions.Include(t => t.ProductTransactions).ThenInclude(t => t.Product)
-                .Where(c => !c.IsDeleted && c.Type == TransactionType.Invoice);
+                .Where(c => !c.IsDeleted && c.Type == TransactionType.Invoice && c.ProductTransactions.Any());
 
             if(!string.IsNullOrEmpty(query.StartDate) && !string.IsNullOrEmpty(query.EndDate))
             {

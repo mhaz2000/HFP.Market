@@ -15,7 +15,10 @@ namespace HFP.Infrastructure.EF.Contexts
         public DbSet<UserRoleReadModel> UserRoles { get; set; }
         public DbSet<TransactionReadModel> Transactions { get; set; }
         public DbSet<DiscountBuyerReadModel> DiscountBuyers { get; set; }
+        public DbSet<PurchaseInvoiceReadModel> PurchaseInvoices { get; set; }
         public DbSet<ProductTransactionReadModel> ProductTransactions { get; set; }
+        public DbSet<PurchaseInvoiceItemReadModel> PurchaseInvoiceItems { get; set; }
+
         public ReadDbContext(DbContextOptions<ReadDbContext> options) : base(options)
         {
 

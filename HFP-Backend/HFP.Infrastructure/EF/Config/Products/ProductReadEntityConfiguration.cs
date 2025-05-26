@@ -2,9 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using HFP.Infrastructure.EF.Models;
 
-namespace HFP.Infrastructure.EF.Config.Users
+namespace HFP.Infrastructure.EF.Config.Products
 {
-
     internal sealed class ProductReadEntityConfiguration : IEntityTypeConfiguration<ProductReadModel>
     {
         public void Configure(EntityTypeBuilder<ProductReadModel> builder)

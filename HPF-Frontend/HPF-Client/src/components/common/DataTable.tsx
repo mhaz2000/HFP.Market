@@ -106,16 +106,16 @@ export default function DataTable<T>({
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell align="right">#</TableCell>
+                                <TableCell align="right" sx={{fontWeight: '1000'}}>#</TableCell>
 
                                 {columns.map((col) => (
-                                    <TableCell key={col.key as string} align={col.align ?? 'right'}>
+                                    <TableCell key={col.key as string} align={col.align ?? 'right'} sx={{fontWeight: '1000'}}>
                                         {col.label}
                                     </TableCell>
                                 ))}
 
                                 {renderActions && (
-                                    <TableCell align="center">عملیات</TableCell>
+                                    <TableCell align="center" sx={{fontWeight: '1000'}}>عملیات</TableCell>
                                 )}
                             </TableRow>
                         </TableHead>

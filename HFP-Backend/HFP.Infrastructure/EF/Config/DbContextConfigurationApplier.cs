@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using HFP.Domain.Entities;
-using HFP.Infrastructure.EF.Config.Users;
-using HFP.Infrastructure.EF.Models;
-using HFP.Infrastructure.EF.Config.Transactions;
+﻿using HFP.Domain.Entities;
 using HFP.Infrastructure.EF.Config.Buyers;
 using HFP.Infrastructure.EF.Config.Discounts;
+using HFP.Infrastructure.EF.Config.Products;
+using HFP.Infrastructure.EF.Config.PurchaseInvoices;
+using HFP.Infrastructure.EF.Config.Transactions;
+using HFP.Infrastructure.EF.Config.Users;
+using HFP.Infrastructure.EF.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HFP.Infrastructure.EF.Config
 {
@@ -22,6 +24,8 @@ namespace HFP.Infrastructure.EF.Config
             modelBuilder.ApplyConfiguration<DiscountBuyerReadModel>(new DiscountReadEntityConfiguration());
             modelBuilder.ApplyConfiguration<TransactionReadModel>(new TransactionReadEntityConfiguration());
             modelBuilder.ApplyConfiguration<ProductTransactionReadModel>(new TransactionReadEntityConfiguration());
+            modelBuilder.ApplyConfiguration<PurchaseInvoiceReadModel>(new PurchaseInvoiceReadEntityConfiguration());
+            modelBuilder.ApplyConfiguration<PurchaseInvoiceItemReadModel>(new PurchaseInvoiceReadEntityConfiguration());
         }
 
 
@@ -37,6 +41,8 @@ namespace HFP.Infrastructure.EF.Config
             modelBuilder.ApplyConfiguration(new ProductWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<Transaction>(new TransactionWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<ProductTransaction>(new TransactionWriteEntityConfiguration());
+            modelBuilder.ApplyConfiguration<PurchaseInvoice>(new PurchaseInvoiceWriteEntityConfiguration());
+            modelBuilder.ApplyConfiguration<PurchaseInvoiceItem>(new PurchaseInvoiceWriteEntityConfiguration());
         }
     }
 }

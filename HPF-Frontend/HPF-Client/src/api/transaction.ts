@@ -24,7 +24,7 @@ export const getTransactions = async (params?: TransactionFilter): Promise<ApiRe
   return data
 }
 
-export const getProfitReport = async (params?: DefaultParams): Promise<ApiResponse<ProfitReportData[]>> => {
+export const getProfitReport = async (params?: TransactionFilter): Promise<ApiResponse<ProfitReportData[]>> => {
   const { data } = await authorizedAxios.get<ApiResponse<ProfitReportData[]>>('Transactions/ProfitReport', {
     params
   });

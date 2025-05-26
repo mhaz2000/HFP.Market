@@ -31,7 +31,4 @@ namespace HFP.Domain.Entities
             BuyTimePurchasePirce = buyTimePurchasePrice;
         }
     }
-
-
-
 }

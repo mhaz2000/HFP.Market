@@ -16,6 +16,7 @@ namespace HFP.Application
             services.AddScoped<IProductFactory, ProductFactory>();
             services.AddScoped<ITransactionFactory, TransactionFactory>();
             services.AddScoped<IBuyerFactory, BuyerFactory>();
+            services.AddScoped<IPurchaseInvoiceFactory, PurchaseInvoiceFactory>();
 
             services.AddShared(configuration);
 

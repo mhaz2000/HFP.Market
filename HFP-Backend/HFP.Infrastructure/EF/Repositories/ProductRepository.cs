@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HFP.Infrastructure.EF.Repositories
 {
+
     internal sealed class ProductRepository : GenericRepository<Product>, IProductRepository
     {
         public ProductRepository(WriteDbContext context) : base(context)

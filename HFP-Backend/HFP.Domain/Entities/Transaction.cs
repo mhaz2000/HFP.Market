@@ -11,7 +11,7 @@ namespace HFP.Domain.Entities
         public TransactionType Type { get; private set; }
         public TransactionStatus Status { get; private set; }
         public BuyerId BuyerId { get; private set; }
-        public DateTime Date { get; private set; }
+        public DateTime Date { get; set; }
 
         private readonly List<ProductTransaction> _products = new List<ProductTransaction>();
         public IReadOnlyCollection<ProductTransaction> Products => _products.AsReadOnly();
