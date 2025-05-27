@@ -43,7 +43,23 @@ const menuItems: MenuItem[] = [
       }
     ]
   },
-    {
+  {
+    title: 'فاکتور خرید',
+    icon: 'material-symbols:receipt-long',
+    children: [
+      {
+        title: 'افزودن فاکتور خرید جدید',
+        path: '/dashboard/new-purchase-invoice',
+        icon: 'mdi:subdirectory-arrow-left',
+      },
+      {
+        title: 'فاکتور های خرید',
+        path: '/dashboard/purchase-invoices',
+        icon: 'mdi:subdirectory-arrow-left',
+      }
+    ]
+  },
+  {
     title: 'گزارشات',
     icon: 'material-symbols:currency-exchange',
     children: [

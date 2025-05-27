@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HFP.Infrastructure.Queries.Handlers
 {
-    internal class GetPurchaseInvoiceHandler : IQueryHandler<GetPurchaseInvoiceQuery, PurchaseInvoiceDto>
+    internal class GetPurchaseInvoiceHandler : IQueryHandler<GetPurchaseInvoiceQuery, EditPurchaseInvoiceDto>
     {
 
         private readonly DbSet<PurchaseInvoiceReadModel> _purchaseInvoices;
@@ -21,13 +21,13 @@ namespace HFP.Infrastructure.Queries.Handlers
             _mapper = mapper;
         }
 
-        public async Task<PurchaseInvoiceDto> Handle(GetPurchaseInvoiceQuery request, CancellationToken cancellationToken)
+        public async Task<EditPurchaseInvoiceDto> Handle(GetPurchaseInvoiceQuery request, CancellationToken cancellationToken)
         {
             var invoice = await _purchaseInvoices.Include(t=> t.Items).FirstOrDefaultAsync(pi => pi.Id == request.Id);
             if (invoice is null)
                 throw new BusinessException("فاکتور خرید یافت نشد.");
 
-            return _mapper.Map<PurchaseInvoiceDto>(invoice);
+            return _mapper.Map<EditPurchaseInvoiceDto>(invoice);
         }
     }
 }

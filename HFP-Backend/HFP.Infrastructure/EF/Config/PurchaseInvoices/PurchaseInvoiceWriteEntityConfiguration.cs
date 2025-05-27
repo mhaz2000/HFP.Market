@@ -41,7 +41,7 @@ namespace HFP.Infrastructure.EF.Config.PurchaseInvoices
                 .HasConversion(name => name.Value, name => ProductName.Create(name))
                 .IsRequired();
 
-            builder.Property(u => u.PurchasePrice)
+            builder.Property(u => u.Price)
                 .HasConversion(price => price.Value, price => ProductPrice.Create(price))
                 .IsRequired();
 

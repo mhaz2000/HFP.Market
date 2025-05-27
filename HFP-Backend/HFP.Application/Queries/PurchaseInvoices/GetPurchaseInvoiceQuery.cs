@@ -3,5 +3,5 @@ using HFP.Shared.Abstractions.Queries;
 
 namespace HFP.Application.Queries.PurchaseInvoices
 {
-    public record GetPurchaseInvoiceQuery(Guid Id) : IQuery<PurchaseInvoiceDto>;
+    public record GetPurchaseInvoiceQuery(Guid Id) : IQuery<EditPurchaseInvoiceDto>;
 }

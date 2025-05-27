@@ -11,7 +11,7 @@ namespace HFP.Domain.ValueObjects.PurchaseInvoices
 
         public PurchaseInvoiceDate(DateTime value)
         {
-            if (value > DateTime.Now.Date)
+            if (value.Date > DateTime.Now.Date.Date)
                 throw new BusinessException("تاریخ فاکتور نمی‌تواند جلو تر از تاریخ حال حاضر باشد.");
 
             Value = value;

@@ -1,6 +1,7 @@
 ﻿using HFP.Domain.Factories.interfaces;
 using HFP.Domain.Repositories;
 using HFP.Shared.Abstractions.Commands;
+using HFP.Shared.Helpers;
 
 namespace HFP.Application.Commands.PurchaseInvoice.Handlers
 {
@@ -19,12 +20,12 @@ namespace HFP.Application.Commands.PurchaseInvoice.Handlers
         {
             var (ImageId, Date, Items) = request;
 
-            var purchaseInvoice = _purchaseInvoiceFactory.Create(ImageId, request.Date);
+            var purchaseInvoice = _purchaseInvoiceFactory.Create(ImageId, request.Date.ToDate(false));
             await _purchaseInvoiceRepository.AddAsync(purchaseInvoice);
 
             foreach (var item in Items)
             {
-                var purchaseInvoiceItem = _purchaseInvoiceFactory.Create(item.ProductName, item.Qunatity, item.PurchasePrice, purchaseInvoice);
+                var purchaseInvoiceItem = _purchaseInvoiceFactory.Create(item.ProductName, item.Quantity, item.PurchasePrice, purchaseInvoice);
                 await _purchaseInvoiceRepository.AddItemAsync(purchaseInvoiceItem);
             }
 

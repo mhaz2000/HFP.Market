@@ -2,6 +2,7 @@
 using HFP.Domain.Repositories;
 using HFP.Shared.Abstractions.Commands;
 using HFP.Shared.Abstractions.Exceptions;
+using HFP.Shared.Helpers;
 
 namespace HFP.Application.Commands.PurchaseInvoice.Handlers
 {
@@ -21,14 +22,15 @@ namespace HFP.Application.Commands.PurchaseInvoice.Handlers
             if (purchaseInvoice is null)
                 throw new BusinessException("فاکتور خرید یافت نشد.");
 
-            _purchaseInvoiceFactory.Update(request.ImageId, request.Date, purchaseInvoice);
+            _purchaseInvoiceFactory.Update(request.ImageId, request.Date.ToDate(false), purchaseInvoice);
 
             foreach (var item in purchaseInvoice.Items)
-                await _purchaseInvoiceRepository.DeleteAsync(item.Id);
+                _purchaseInvoiceRepository.DeleteItem(item);
+
 
             foreach (var item in request.Items)
             {
-                var purchaseInvoiceItem = _purchaseInvoiceFactory.Create(item.ProductName, item.Qunatity, item.PurchasePrice, purchaseInvoice);
+                var purchaseInvoiceItem = _purchaseInvoiceFactory.Create(item.ProductName, item.Quantity, item.PurchasePrice, purchaseInvoice);
                 await _purchaseInvoiceRepository.AddItemAsync(purchaseInvoiceItem);
             }
 

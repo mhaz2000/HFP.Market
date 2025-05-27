@@ -32,7 +32,7 @@ export default function Transactions() {
     });
 
     const { refetch } = useQuery<ApiResponse<Transaction[]>, Error>({
-        queryKey: ['getProducts', queryParams],
+        queryKey: ['getTransactions', queryParams],
         queryFn: () => getTransactions(queryParams),
         enabled: false
     });

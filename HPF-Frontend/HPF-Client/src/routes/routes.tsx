@@ -14,8 +14,10 @@ import NotFound from '../pages/NotFound';
 import Transactions from '../pages/dashboard/transactions/Transactions';
 import DiscountsTable from '../pages/dashboard/discounts/Discounts';
 import NewDiscountPage from '../pages/dashboard/discounts/NewDiscount';
-import EditDiscountPage from '../pages/dashboard/discounts/EditDiscount';
 import ProfitReport from '../pages/dashboard/transactions/ProfitReport';
+import EditPurchaseInvoicePage from '../pages/dashboard/purchaseInvoices/EditPurchaseInvoice';
+import NewPurchaseInvoicePage from '../pages/dashboard/purchaseInvoices/NewPurchaseInvoice';
+import PurchaseInvoices from '../pages/dashboard/purchaseInvoices/PurchaseInvoices';
 
 const routes: RouteObject[] = [
   {
@@ -66,9 +68,21 @@ const routes: RouteObject[] = [
             element: <DiscountsTable />
           },
           {
-            path: 'discount/:id',
-            element: <EditDiscountPage />
+            path: '/dashboard/purchase-invoices',
+            element: <PurchaseInvoices />
           },
+          {
+            path: '/dashboard/new-purchase-invoice',
+            element: <NewPurchaseInvoicePage />
+          },
+          {
+            path: '/dashboard/edit-purchase-invoice/:id',
+            element: <EditPurchaseInvoicePage />
+          },
+          // {
+          //   path: 'discount/:id',
+          //   element: <EditDiscountPage />
+          // },
           // Add more dashboard routes here
         ],
       },

@@ -15,9 +15,9 @@ namespace HFP.Infrastructure.Profiles
                 .ConstructUsing(t => new PurchaseInvoiceDto()
                 {
                     Id = t.Id,
-                    Price = t.Items.Sum(c => c.Price),
-                    Date = $"{pc.GetYear(t.Date):0000}/{pc.GetMonth(t.Date):00}/{pc.GetDayOfMonth(t.Date):00}"
-                });
+                    Price = t.Items.Sum(c => c.Price * c.Quantity),
+                    Date = t.Date.ToShortDateString()
+                }).ForMember(dest=> dest.Date, opt => opt.MapFrom(t=> $"{pc.GetYear(t.Date):0000}/{pc.GetMonth(t.Date):00}/{pc.GetDayOfMonth(t.Date):00}"));
         }
     }
 }

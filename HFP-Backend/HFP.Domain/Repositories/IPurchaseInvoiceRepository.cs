@@ -6,5 +6,6 @@ namespace HFP.Domain.Repositories
     public interface IPurchaseInvoiceRepository : IGenericRepository<PurchaseInvoice>
     {
         Task AddItemAsync(PurchaseInvoiceItem purchaseInvoiceItem);
+        void DeleteItem(PurchaseInvoiceItem purchaseInvoiceItem);
     }
 }

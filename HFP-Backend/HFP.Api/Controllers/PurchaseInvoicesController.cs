@@ -39,14 +39,14 @@ namespace HFP.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromBody] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             await _commandDispatcher.DispatchAsync(new DeletePurchaseInvoiceCommand(id));
             return BaseOk();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PurchaseInvoiceDto>> Get([FromRoute] Guid id)
+        public async Task<ActionResult<EditPurchaseInvoiceDto>> Get([FromRoute] Guid id)
         {
             var data = await _queryDispatcher.QueryAsync(new GetPurchaseInvoiceQuery(id));
             return OkOrNotFound(data);

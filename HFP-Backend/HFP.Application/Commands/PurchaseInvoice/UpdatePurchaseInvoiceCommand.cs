@@ -2,6 +2,6 @@
 
 namespace HFP.Application.Commands.PurchaseInvoice
 {
-    public record UpdatePurchaseInvoiceCommand(Guid Id, Guid ImageId, DateTime Date, IEnumerable<CreatePurchaseInvoiceItemCommand> Items) : ICommand;
+    public record UpdatePurchaseInvoiceCommand(Guid Id, Guid ImageId, string Date, IEnumerable<CreatePurchaseInvoiceItemCommand> Items) : ICommand;
     
 }

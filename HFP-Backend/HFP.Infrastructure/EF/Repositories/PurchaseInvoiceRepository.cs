@@ -15,5 +15,10 @@ namespace HFP.Infrastructure.EF.Repositories
         {
             await _context.PurchaseInvoiceItems.AddAsync(purchaseInvoiceItem);
         }
+
+        public void DeleteItem(PurchaseInvoiceItem purchaseInvoiceItem)
+        {
+            _context.PurchaseInvoiceItems.Remove(purchaseInvoiceItem);
+        }
     }
 }

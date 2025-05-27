@@ -14,6 +14,7 @@ namespace HFP.Domain.Entities
 
         public PurchaseInvoice(Guid? image, PurchaseInvoiceDate date)
         {
+            Id = Guid.NewGuid();
             Image = image;
             Date = date;
         }
