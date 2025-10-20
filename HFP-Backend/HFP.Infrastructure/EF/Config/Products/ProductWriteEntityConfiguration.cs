@@ -41,6 +41,11 @@ namespace HFP.Infrastructure.EF.Config.Users
                 .HasForeignKey(ur => ur.TransactionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasOne(p => p.Shelf)
+                .WithMany(s => s.Products)
+                .HasForeignKey(p => p.ShelfId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasQueryFilter(p => !p.IsDeleted);
 
         }

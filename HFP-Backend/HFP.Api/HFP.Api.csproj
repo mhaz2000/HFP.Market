@@ -24,4 +24,10 @@
     <ProjectReference Include="..\HFP.Shared\HFP.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="PosInterface">
+      <HintPath>..\..\PosInterface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

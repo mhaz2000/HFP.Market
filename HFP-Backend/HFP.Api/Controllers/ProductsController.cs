@@ -12,6 +12,27 @@ namespace HFP.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    public class ShelvesController : BaseController
+    {
+        private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;
+
+        public ShelvesController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        {
+            _commandDispatcher = commandDispatcher;
+            _queryDispatcher = queryDispatcher;
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
+        {
+            await _commandDispatcher.DispatchAsync(command);
+            return BaseOk();
+        }
+    }
+
+    [Route("api/[controller]")]
+    [ApiController]
     public class ProductsController : BaseController
     {
         private readonly ICommandDispatcher _commandDispatcher;

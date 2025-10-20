@@ -44,7 +44,7 @@ namespace HFP.Application.Commands.Purchase.Handlers
 
             transaction.AddProduct(product, 1);
 
-            if (product.Quantity < transaction.Products.FirstOrDefault(p => p.Product.Code == request.ProductCode)!.Quantity)
+            if (product.Quantity < transaction.Products.FirstOrDefault(p => (p.Product?.Code ?? product.Code) == request.ProductCode)!.Quantity)
                 throw new BusinessException("موجودی کالای مورد نظر کافی نیست.");
 
             await _transactionRepository.UpdateTransactionAsync(transaction);

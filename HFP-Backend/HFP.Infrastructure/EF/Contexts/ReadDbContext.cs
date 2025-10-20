@@ -10,6 +10,7 @@ namespace HFP.Infrastructure.EF.Contexts
         public DbSet<UserReadModel> Users { get; set; }
         public DbSet<RoleReadModel> Roles { get; set; }
         public DbSet<BuyerReadModel> Buyers { get; set; }
+        public DbSet<ShelfReadModel> Shelves { get; set; }
         public DbSet<ProductReadModel> Products { get; set; }
         public DbSet<DiscountReadModel> Discounts { get; set; }
         public DbSet<UserRoleReadModel> UserRoles { get; set; }

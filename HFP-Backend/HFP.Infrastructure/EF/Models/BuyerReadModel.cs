@@ -1,5 +1,13 @@
 ﻿namespace HFP.Infrastructure.EF.Models
 {
+    internal class ShelfReadModel
+    {
+        public Guid Id { get; set; }
+        public bool IsDeleted { get; set; }
+        public int Order { get; set; }
+        public ICollection<ProductReadModel> Products { get; set; } = [];
+
+    }
     internal class BuyerReadModel
     {
         public Guid Id { get; set; }
@@ -9,7 +17,7 @@
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
-        public ICollection<DiscountBuyerReadModel> DiscountBuyers { get; set; }
+        public ICollection<DiscountBuyerReadModel> DiscountBuyers { get; set; } = [];
 
     }
 }

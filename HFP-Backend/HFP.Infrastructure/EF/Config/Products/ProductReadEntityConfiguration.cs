@@ -16,6 +16,11 @@ namespace HFP.Infrastructure.EF.Config.Products
                 .WithOne(p => p.Product)
                 .HasForeignKey(ur => ur.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(p => p.Shelf)
+                .WithMany(s => s.Products)
+                .HasForeignKey(p => p.ShelfId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 

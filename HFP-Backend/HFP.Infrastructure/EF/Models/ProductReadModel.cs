@@ -11,6 +11,8 @@
         public decimal PurchasePrice { get; set; }
         public bool IsDeleted { get; set; }
 
+        public Guid? ShelfId { get; set; }
+        public ShelfReadModel? Shelf { get; set; }
         public ICollection<ProductTransactionReadModel> ProductTransactions { get; set; }
 
     }

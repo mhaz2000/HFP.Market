@@ -26,6 +26,7 @@ namespace HFP.Infrastructure.EF
             services.AddScoped<IUserReadService, UserReadService>();
             services.AddScoped<IRoleReadService, RoleReadService>();
             services.AddScoped<IProductReadService, ProductReadService>();
+            services.AddScoped<ITransactionReadService, TransactionReadService>();
 
 
             services.Scan(scan => scan

@@ -12,6 +12,9 @@ namespace HFP.Domain.Entities
         public ProductPrice PurchasePrice { get; private set; }
         public Guid? Image { get; private set; }
 
+        public Guid? ShelfId { get; set; }
+        public Shelf? Shelf { get; set; }
+
         private readonly List<ProductTransaction> _transactions = new List<ProductTransaction>();
         public IReadOnlyCollection<ProductTransaction> Transactions => _transactions.AsReadOnly();
 

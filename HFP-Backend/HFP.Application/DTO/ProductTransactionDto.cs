@@ -1,5 +1,10 @@
 ﻿namespace HFP.Application.DTO
 {
+    public record PaymentResultDto
+    {
+        public bool IsSuccess { get; set; }
+        public string? ErrorMessage { get; set; }
+    }
     public record ProductTransactionDto
     {
         public required string ProductName { get; set; }

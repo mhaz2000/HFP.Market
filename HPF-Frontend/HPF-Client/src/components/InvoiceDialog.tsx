@@ -13,11 +13,9 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-
 import defaultImage from '..//assets/images/Default Product Images.png';
 import { InvoiceItem } from '../types/invoice';
-import { addProductToInvoice, getInvoice, removeProductFromInvoice } from '../api/transaction';
+import { getInvoice, removeProductFromInvoice } from '../api/transaction';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { toPersianNumber } from '../lib/PersianNumberConverter';
@@ -25,7 +23,7 @@ import { applyDiscount } from '../api/discount';
 
 interface FancyDialogProps {
   open: boolean;
-  onClose: () => void;
+  onClose: (buyerId?: string) => void;
   buyerId: string;
   refreshKey: number;
 }
@@ -38,22 +36,12 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
   const [discountResult, setDiscountResult] =
     useState<{ newPrice: number | null, errorMessage: string }>({ newPrice: null, errorMessage: '' })
 
+  const [isProcessing, setIsProcessing] = useState(true);
+
   const { data: invoiceData, isLoading, isError, refetch } = useQuery({
     queryKey: ['invoice', buyerId],
     queryFn: () => getInvoice(buyerId),
     enabled: !!buyerId && open,
-  });
-
-  const { mutate: addProduct } = useMutation<string, Error, { buyerId: string; productCode: string }>({
-    mutationFn: addProductToInvoice,
-    onSuccess: () => {
-      refetch()
-      if (discountResult.newPrice)
-        applyDiscountOnPrice({ code: discountCode, buyerId })
-    },
-    onError: (error: any) => {
-      toast.error(error.response.data.Message);
-    },
   });
 
   const { mutate: removeProduct } = useMutation<string, Error, { buyerId: string; productId: string }>({
@@ -83,13 +71,8 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
     },
   });
 
-
   const handleReduce = (productId: string) => {
     removeProduct({ buyerId, productId })
-  };
-
-  const handleAdd = (productCode: string) => {
-    addProduct({ buyerId, productCode })
   };
 
   const handleApplyDiscount = () => {
@@ -104,25 +87,31 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
   const handlePayment = () => {
     setDiscountCode('')
     setDiscountResult({ newPrice: null, errorMessage: '' })
-    onClose()
+    onClose(buyerId)
   }
 
   useEffect(() => {
     if (invoiceData?.length == 0) {
       setDiscountCode('')
       setDiscountResult({ newPrice: null, errorMessage: '' })
-      onClose()
+      onClose(undefined)
     }
-
   }, [invoiceData?.length])
 
   useEffect(() => {
-    if (open)
+    if (open) {
       refetch();
+
+      // 👇 Show "processing" section for 5 seconds
+      setIsProcessing(true);
+      const timer = setTimeout(() => setIsProcessing(false), 5000);
+
+      return () => clearTimeout(timer);
+    }
 
     if (discountResult.newPrice)
       applyDiscountOnPrice({ code: discountCode, buyerId })
-  }, [refreshKey]);
+  }, [refreshKey, open]);
 
   const totalPrice =
     invoiceData?.reduce((sum, item) => sum + item.price * item.quantity, 0) ?? 0;
@@ -138,7 +127,15 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
       <DialogTitle>فاکتور خرید</DialogTitle>
 
       <DialogContent>
-        {isLoading ? (
+        {/* 👇 Show 5-second processing section */}
+        {isProcessing ? (
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" my={6}>
+            <CircularProgress size={60} />
+            <Typography mt={2} fontWeight="bold" color="primary">
+              در حال پردازش کالاها، لطفاً چند لحظه صبر کنید...
+            </Typography>
+          </Box>
+        ) : isLoading ? (
           <Box display="flex" justifyContent="center" my={4}>
             <CircularProgress />
           </Box>
@@ -186,13 +183,6 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
                   >
                     <RemoveIcon />
                   </IconButton>
-
-                  <IconButton
-                    color="primary"
-                    onClick={() => handleAdd(item.productCode)}
-                  >
-                    <AddIcon />
-                  </IconButton>
                 </Box>
               </Box>
             ))}
@@ -216,6 +206,7 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
         )}
       </DialogContent>
 
+      {/* Keep your existing actions */}
       <DialogActions sx={{ mx: 2 }}>
         <Box width={'100%'} display={'flex'} justifyContent={'space-between'} >
           <Box display={'flex'} gap={2}>
@@ -227,14 +218,13 @@ const InvoiceDialog = ({ open, buyerId, onClose, refreshKey }: FancyDialogProps)
               helperText={discountResult.errorMessage}
             />
 
-            <Button variant="contained" sx={{ width: "150px" }} onClick={handleApplyDiscount} disabled={isLoading}>
+            <Button variant="contained" sx={{ width: "150px" }} onClick={handleApplyDiscount} disabled={isProcessing}>
               اعمال تخفیف
             </Button>
           </Box>
-          <Button variant="contained" onClick={handlePayment}>
+          <Button variant="contained" disabled={isLoading || isProcessing} onClick={handlePayment}>
             پرداخت
           </Button>
-
         </Box>
       </DialogActions>
     </Dialog>

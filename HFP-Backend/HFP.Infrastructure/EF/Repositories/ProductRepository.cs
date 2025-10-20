@@ -17,5 +17,10 @@ namespace HFP.Infrastructure.EF.Repositories
             => await _context.Products
                 .Where(p => codes.Contains(p.Code))
                 .ToListAsync();
+
+        public async Task<IList<Product>> GetByIds(List<Guid> ids)
+            => await _context.Products
+                .Where(p => ids.Contains(p.Id))
+                .ToListAsync();
     }
 }

@@ -3,6 +3,7 @@ using HFP.Infrastructure.EF.Config.Buyers;
 using HFP.Infrastructure.EF.Config.Discounts;
 using HFP.Infrastructure.EF.Config.Products;
 using HFP.Infrastructure.EF.Config.PurchaseInvoices;
+using HFP.Infrastructure.EF.Config.Shelves;
 using HFP.Infrastructure.EF.Config.Transactions;
 using HFP.Infrastructure.EF.Config.Users;
 using HFP.Infrastructure.EF.Models;
@@ -19,6 +20,7 @@ namespace HFP.Infrastructure.EF.Config
             modelBuilder.ApplyConfiguration<UserRoleReadModel>(new UserReadEntityConfiguration());
 
             modelBuilder.ApplyConfiguration(new BuyerReadEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ShelfReadEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ProductReadEntityConfiguration());
             modelBuilder.ApplyConfiguration<DiscountReadModel>(new DiscountReadEntityConfiguration());
             modelBuilder.ApplyConfiguration<DiscountBuyerReadModel>(new DiscountReadEntityConfiguration());
@@ -31,14 +33,15 @@ namespace HFP.Infrastructure.EF.Config
 
         public static void ApplyWriteConfigurations(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ShelfWriteEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BuyerWriteEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductWriteEntityConfiguration());
+
             modelBuilder.ApplyConfiguration<User>(new UserWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<Role>(new UserWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<UserRole>(new UserWriteEntityConfiguration());
-
-            modelBuilder.ApplyConfiguration(new BuyerWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<Discount>(new DiscountWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<DiscountBuyer>(new DiscountWriteEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<Transaction>(new TransactionWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<ProductTransaction>(new TransactionWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<PurchaseInvoice>(new PurchaseInvoiceWriteEntityConfiguration());

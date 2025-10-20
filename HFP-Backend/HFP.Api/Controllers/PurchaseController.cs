@@ -30,7 +30,7 @@ namespace HFP.Api.Controllers
         public async Task<IActionResult> AddToCart([FromBody] AddProductToCartCommand command)
         {
             var result = await _commandDispatcher.DispatchAsync<AddProductToCartCommand, bool>(command);
-            if(result)
+            if (result)
                 await _hubContext.Clients.All.SendAsync("ShowInvoice", new
                 {
                     data = command.BuyerId
@@ -51,6 +51,13 @@ namespace HFP.Api.Controllers
         public async Task<ActionResult<IEnumerable<ProductTransactionDto>>> GetInvoice(string buyerId)
         {
             var result = await _queryDispatcher.QueryAsync(new GetInvoiceQuery(buyerId));
+            return OkOrNotFound(result);
+        }
+
+        [HttpPost("Payment/{buyerId}")]
+        public async Task<ActionResult<PaymentResultDto>> Payment([FromRoute] string buyerId)
+        {
+            var result = await _commandDispatcher.DispatchAsync<PaymentCommand, PaymentResultDto>(new PaymentCommand(buyerId));
             return OkOrNotFound(result);
         }
     }

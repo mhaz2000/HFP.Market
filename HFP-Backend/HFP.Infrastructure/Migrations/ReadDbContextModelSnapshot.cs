@@ -139,7 +139,12 @@ namespace HFP.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ShelfId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShelfId");
 
                     b.ToTable("Products", (string)null);
                 });
@@ -238,6 +243,23 @@ namespace HFP.Infrastructure.Migrations
                     b.ToTable("Roles", (string)null);
                 });
 
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.ShelfReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Shelves", (string)null);
+                });
+
             modelBuilder.Entity("HFP.Infrastructure.EF.Models.TransactionReadModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -330,6 +352,16 @@ namespace HFP.Infrastructure.Migrations
                     b.Navigation("Discount");
                 });
 
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.ProductReadModel", b =>
+                {
+                    b.HasOne("HFP.Infrastructure.EF.Models.ShelfReadModel", "Shelf")
+                        .WithMany("Products")
+                        .HasForeignKey("ShelfId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Shelf");
+                });
+
             modelBuilder.Entity("HFP.Infrastructure.EF.Models.ProductTransactionReadModel", b =>
                 {
                     b.HasOne("HFP.Infrastructure.EF.Models.ProductReadModel", "Product")
@@ -402,6 +434,11 @@ namespace HFP.Infrastructure.Migrations
             modelBuilder.Entity("HFP.Infrastructure.EF.Models.RoleReadModel", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("HFP.Infrastructure.EF.Models.ShelfReadModel", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("HFP.Infrastructure.EF.Models.TransactionReadModel", b =>

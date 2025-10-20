@@ -18,6 +18,7 @@ import ProfitReport from '../pages/dashboard/transactions/ProfitReport';
 import EditPurchaseInvoicePage from '../pages/dashboard/purchaseInvoices/EditPurchaseInvoice';
 import NewPurchaseInvoicePage from '../pages/dashboard/purchaseInvoices/NewPurchaseInvoice';
 import PurchaseInvoices from '../pages/dashboard/purchaseInvoices/PurchaseInvoices';
+import OrganizingShelvesPage from '../pages/dashboard/OrganizingShelvesPage';
 
 const routes: RouteObject[] = [
   {
@@ -78,6 +79,10 @@ const routes: RouteObject[] = [
           {
             path: '/dashboard/edit-purchase-invoice/:id',
             element: <EditPurchaseInvoicePage />
+          },
+          {
+            path: '/dashboard/organizing-shelves',
+            element: <OrganizingShelvesPage />
           },
           // {
           //   path: 'discount/:id',

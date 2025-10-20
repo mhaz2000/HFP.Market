@@ -74,6 +74,11 @@ const menuItems: MenuItem[] = [
         icon: 'mdi:subdirectory-arrow-left',
       }
     ]
+  },
+  {
+    title: 'سازماندهی قفسه ها',
+    path: '/dashboard/organizing-shelves',
+    icon: 'material-symbols:shelves',
   }
 ];
 

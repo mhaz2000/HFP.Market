@@ -21,7 +21,7 @@ const ProductList = () => {
   const products = data?.data ?? [];
 
   return (
-    <Box sx={{ mt: 15 }}>
+    <Box sx={{ mt: 3 }}>
       <Typography variant="h5" textAlign="right" gutterBottom>
         جستجوی محصول
       </Typography>

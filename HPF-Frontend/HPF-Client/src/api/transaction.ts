@@ -7,9 +7,9 @@ export const getInvoice = async (buyerId: string): Promise<InvoiceItem[]> => {
   return data.data;
 };
 
-export const addProductToInvoice = async ({ buyerId, productCode }: { buyerId: string; productCode: string }): Promise<string> => {
-  const { data } = await anonymousAxios.post<string>(`Purchase`, { productCode, buyerId });
-  return data;
+export const payInvoice = async (buyerId: string ): Promise<{isSuccess:boolean, errorMessage: string}> => {
+  const { data } = await anonymousAxios.post<ApiResponse<{isSuccess:boolean, errorMessage: string}>>(`Purchase/Payment/${buyerId}`);
+  return data.data;
 };
 
 export const removeProductFromInvoice = async ({ buyerId, productId }: { buyerId: string; productId: string }): Promise<string> => {
