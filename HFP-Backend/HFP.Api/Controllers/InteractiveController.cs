@@ -24,15 +24,27 @@ namespace HFP.Api.Controllers
         [HttpPost("CustomerEntered")]
         public async Task<IActionResult> CustomerEntered([FromBody] CustomerEnteredCommand command)
         {
-            await _commandDispatcher.DispatchAsync(command);
+            var isAdmin = await _commandDispatcher.DispatchAsync<CustomerEnteredCommand, bool>(command);
 
-            await _hubContext.Clients.All.SendAsync("ShowProductAnnouncement", new
-            {
-                title="خوش امدید",
-                message="فروشگاه X، خوش آمدید. آیا نیاز به آموزش خرید محصول دارید؟"
-            });
+            await _hubContext.Clients.All.SendAsync("CardInserted", isAdmin);
 
             return Ok(new { message = "triggered." });
+        }
+
+        [HttpPost("WhichDoorToOpen/{doorCode}")]
+        public async Task<IActionResult> WhichDoorToOpen([FromRoute] int doorCode)
+        {
+            await _commandDispatcher.DispatchAsync(new SendDoorCodeCommand(doorCode));
+            return Ok();
+        }
+
+        [HttpPost("MarketDoorClosed")]
+        public async Task<IActionResult> MarketDoorClosed()
+        {
+
+            await _hubContext.Clients.All.SendAsync("MarketDoorClosed");
+
+            return Ok();
         }
     }
 }

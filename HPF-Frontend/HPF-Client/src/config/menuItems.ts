@@ -76,10 +76,15 @@ const menuItems: MenuItem[] = [
     ]
   },
   {
-    title: 'سازماندهی قفسه ها',
-    path: '/dashboard/organizing-shelves',
-    icon: 'material-symbols:shelves',
+    title: 'انبارداران',
+    path: '/dashboard/warehousemen',
+    icon: 'material-symbols:engineering',
   }
+  // {
+  //   title: 'سازماندهی قفسه ها',
+  //   path: '/dashboard/organizing-shelves',
+  //   icon: 'material-symbols:shelves',
+  // }
 ];
 
 export default menuItems;

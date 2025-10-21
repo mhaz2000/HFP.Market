@@ -1,10 +1,12 @@
 ﻿using HFP.Domain.Consts;
 using HFP.Domain.ValueObjects.Discount;
+using HFP.Domain.ValueObjects.Users;
 using HFP.Shared.Abstractions.Domain;
 using HFP.Shared.Abstractions.Exceptions;
 
 namespace HFP.Domain.Entities
 {
+
     public class Discount : AggregateRoot<Guid>
     {
         public DiscountName Name { get; set; }

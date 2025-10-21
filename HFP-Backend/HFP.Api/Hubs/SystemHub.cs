@@ -6,7 +6,7 @@ namespace HFP.Api.Hubs
     {
         public async Task SendWelcomeMessage(string title, string message)
         {
-            await Clients.All.SendAsync("ShowProductAnnouncement", new
+            await Clients.All.SendAsync("CardInserted", new
             {
                 title,
                 message

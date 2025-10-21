@@ -17,6 +17,7 @@ namespace HFP.Infrastructure.EF.Contexts
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Warehouseman> Warehousemen { get; set; }
         public DbSet<DiscountBuyer> DiscountBuyers { get; set; }
         public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
         public DbSet<ProductTransaction> ProductTransactions { get; set; }
