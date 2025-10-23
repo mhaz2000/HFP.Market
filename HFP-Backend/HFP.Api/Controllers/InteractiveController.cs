@@ -21,14 +21,14 @@ namespace HFP.Api.Controllers
             _commandDispatcher = commandDispatcher;
         }
 
-        [HttpPost("CustomerEntered")]
-        public async Task<IActionResult> CustomerEntered([FromBody] CustomerEnteredCommand command)
+        [HttpPost("CustomerEntered/{buyerId}")]
+        public async Task<IActionResult> CustomerEntered([FromRoute] string buyerId)
         {
-            var isAdmin = await _commandDispatcher.DispatchAsync<CustomerEnteredCommand, bool>(command);
+            var (hasAccess, isAdmin) = await _commandDispatcher.DispatchAsync<CustomerEnteredCommand, (bool, bool)>(new CustomerEnteredCommand(buyerId));
 
-            await _hubContext.Clients.All.SendAsync("CardInserted", isAdmin);
+            await _hubContext.Clients.All.SendAsync("CardInserted", new { hasAccess, isAdmin });
 
-            return Ok(new { message = "triggered." });
+            return Ok(new { message = hasAccess ? "Access granted" : "Access" });
         }
 
         [HttpPost("WhichDoorToOpen/{doorCode}")]
@@ -41,6 +41,7 @@ namespace HFP.Api.Controllers
         [HttpPost("MarketDoorClosed")]
         public async Task<IActionResult> MarketDoorClosed()
         {
+            await _commandDispatcher.DispatchAsync(new MarketDoorClosedCommand());
 
             await _hubContext.Clients.All.SendAsync("MarketDoorClosed");
 

@@ -53,5 +53,10 @@ namespace HFP.Domain.Entities
                 productTransaction.Quantity--;
 
         }
+
+        public void UpdateState(TransactionStatus status)
+        {
+            this.Status = status;
+        }
     }
 }

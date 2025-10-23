@@ -29,7 +29,7 @@ namespace HFP.Infrastructure.EF
 
                 try
                 {
-                    if (dbContext is ReadDbContext readDbContext)
+                     if (dbContext is ReadDbContext readDbContext)
                         await dbContext.Database.MigrateAsync();
 
                     var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();

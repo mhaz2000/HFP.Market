@@ -9,13 +9,13 @@ namespace HFP.Domain.Entities
 
     public class Discount : AggregateRoot<Guid>
     {
-        public DiscountName Name { get; set; }
-        public DiscountCode Code { get; set; }
-        public DiscountPercentage Percentage { get; set; }
-        public DiscountMaxAmount? MaxAmount { get; set; }
-        public DiscountDate Date { get; set; }
-        public DiscountUsageLimitPerUser UsageLimitPerUser { get; set; }
-        public DiscountType Type { get; set; }
+        public DiscountName Name { get; private set; }
+        public DiscountCode Code { get; private set; }
+        public DiscountPercentage Percentage { get; private set; }
+        public DiscountMaxAmount? MaxAmount { get; private set; }
+        public DiscountDate Date { get; private set; }
+        public DiscountUsageLimitPerUser UsageLimitPerUser { get; private set; }
+        public DiscountType Type { get; private set; }
 
 
         private readonly List<DiscountBuyer> _buyers = new List<DiscountBuyer>();

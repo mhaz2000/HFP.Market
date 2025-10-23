@@ -1,5 +1,4 @@
 ﻿using HFP.Domain.Entities;
-using HFP.Domain.ValueObjects.Transactinos;
 using HFP.Infrastructure.EF.Config;
 using HFP.Shared.Abstractions.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +13,10 @@ namespace HFP.Infrastructure.EF.Contexts
         public DbSet<Buyer> Buyers { get; set; }
         public DbSet<Shelf> Shelves { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Consumer> Consumers { get; set; }
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<Warehouseman> Warehousemen { get; set; }
         public DbSet<DiscountBuyer> DiscountBuyers { get; set; }
         public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
         public DbSet<ProductTransaction> ProductTransactions { get; set; }

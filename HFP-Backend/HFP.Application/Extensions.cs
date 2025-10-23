@@ -12,6 +12,7 @@ namespace HFP.Application
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpClient<SendDoorCodeCommandHandler>();
+            services.AddHttpClient<CustomerEnteredHandler>();
 
             services.AddScoped<IUserFactory, UserFactory>();
             services.AddScoped<IRoleFactory, RoleFactory>();
@@ -19,7 +20,7 @@ namespace HFP.Application
             services.AddScoped<IProductFactory, ProductFactory>();
             services.AddScoped<ITransactionFactory, TransactionFactory>();
             services.AddScoped<IBuyerFactory, BuyerFactory>();
-            services.AddScoped<IWarehousemanFactory, WarehousemanFactory>();
+            services.AddScoped<IConsumerFactory, ConsumerFactory>();
             services.AddScoped<IShelfFactory, ShelfFactory>();
             services.AddScoped<IPurchaseInvoiceFactory, PurchaseInvoiceFactory>();
 

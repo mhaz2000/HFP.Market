@@ -20,7 +20,7 @@ namespace HFP.Application.Commands.Discounts.Handlers
         public async Task Handle(CreateDiscountCommand request, CancellationToken cancellationToken)
         {
 
-            var prevDiscountWithSameCode = await _repository.GetAsync(d => d.Code == request.code && d.Date.EndDate > DateTime.Now);
+            var prevDiscountWithSameCode = await _repository.GetAsync(d => d.Code == request.code && d.Date.EndDate > DateTime.UtcNow);
             if (prevDiscountWithSameCode is not null)
                 throw new BusinessException("کد تخفیف تکراری است.");
 

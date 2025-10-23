@@ -19,7 +19,7 @@ import EditPurchaseInvoicePage from '../pages/dashboard/purchaseInvoices/EditPur
 import NewPurchaseInvoicePage from '../pages/dashboard/purchaseInvoices/NewPurchaseInvoice';
 import PurchaseInvoices from '../pages/dashboard/purchaseInvoices/PurchaseInvoices';
 import OrganizingShelvesPage from '../pages/dashboard/OrganizingShelvesPage';
-import Warehosuemen from '../pages/dashboard/products/Warehousemen';
+import Consumers from '../pages/dashboard/Consumers';
 
 const routes: RouteObject[] = [
   {
@@ -86,8 +86,8 @@ const routes: RouteObject[] = [
             element: <OrganizingShelvesPage />
           },
           {
-            path: '/dashboard/warehousemen',
-            element: <Warehosuemen />
+            path: '/dashboard/consumers',
+            element: <Consumers />
           },
           // {
           //   path: 'discount/:id',

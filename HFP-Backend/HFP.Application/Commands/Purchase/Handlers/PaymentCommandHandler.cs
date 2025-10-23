@@ -28,8 +28,14 @@ namespace HFP.Application.Commands.Purchase.Handlers
             pcPos.InitLAN(_pcPosIp, _pcPosPort);
 
             var priceToPay = await _readService.GetTransactionAmountAsync(request.BuyerId);
+            var transaction = await _repository.GetAsync(t => t.BuyerId == request.BuyerId && t.Status == Domain.Consts.TransactionStatus.Pending);
 
-            PaymentResult result = pcPos.DoSyncPayment(((long)priceToPay*10).ToString(), string.Empty, "1232", DateTime.Now);
+            PaymentResult result = pcPos.DoSyncPayment(((long)priceToPay * 10).ToString(), string.Empty, "1232", DateTime.UtcNow);
+
+            if(result.ErrorCode == 0)
+            {
+                transaction.UpdateState(Domain.Consts.TransactionStatus.Paid);
+            }
 
             return new PaymentResultDto() { IsSuccess = result.ErrorCode == 0, ErrorMessage = result.ErrorMsg };
         }

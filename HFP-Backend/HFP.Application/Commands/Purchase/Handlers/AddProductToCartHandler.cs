@@ -6,7 +6,7 @@ using HFP.Shared.Abstractions.Exceptions;
 
 namespace HFP.Application.Commands.Purchase.Handlers
 {
-    internal class AddProductToCartHandler : ICommandHandler<AddProductToCartCommand, bool>
+    internal class AddProductToCartHandler : ICommandHandler<AddProductToCartCommand, string?>
     {
         private readonly ITransactionFactory _transactionFactory;
         private readonly ITransactionRepository _transactionRepository;
@@ -22,18 +22,18 @@ namespace HFP.Application.Commands.Purchase.Handlers
             _buyerRepository = buyerRepository;
         }
 
-        public async Task<bool> Handle(AddProductToCartCommand request, CancellationToken cancellationToken)
+        public async Task<string?> Handle(AddProductToCartCommand request, CancellationToken cancellationToken)
         {
             var transaction = await _transactionRepository
-                .GetAsync(t => t.BuyerId == request.BuyerId && t.Type == TransactionType.Invoice && t.Status == TransactionStatus.Pending, t => t.Products);
+                .GetAsync(t => t.Type == TransactionType.Invoice && t.Status == TransactionStatus.Pending, t => t.Products);
 
-            var buyer = await _buyerRepository.GetAsync(b => b.BuyerId == request.BuyerId);
+            var buyer = await _buyerRepository.GetAsync(b => b.BuyerId == transaction.BuyerId);
             if (buyer is null)
                 throw new BusinessException("خریدار یافت نشد.");
 
             if (transaction is null)
             {
-                transaction = _transactionFactory.Create(TransactionStatus.Pending, TransactionType.Invoice, DateTime.Now, request.BuyerId);
+                transaction = _transactionFactory.Create(TransactionStatus.Pending, TransactionType.Invoice, DateTime.UtcNow, transaction.BuyerId);
                 await _transactionRepository.AddAsync(transaction);
             }
 
@@ -50,10 +50,10 @@ namespace HFP.Application.Commands.Purchase.Handlers
             await _transactionRepository.UpdateTransactionAsync(transaction);
 
             if (transaction.Products.Any())
-                return true;
+                return transaction.BuyerId;
 
 
-            return false;
+            return null;
         }
     }
 }

@@ -2,5 +2,5 @@
 
 namespace HFP.Application.Commands.Interactive
 {
-    public record CustomerEnteredCommand(string BuyerId) : ICommand<bool>;
+    public record CustomerEnteredCommand(string BuyerId) : ICommand<(bool, bool)>;
 }

@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using DocumentFormat.OpenXml.Wordprocessing;
-using HFP.Application.Services;
+﻿using HFP.Application.Services;
 using HFP.Infrastructure.EF.Contexts;
 using HFP.Infrastructure.EF.Models;
 using Microsoft.EntityFrameworkCore;

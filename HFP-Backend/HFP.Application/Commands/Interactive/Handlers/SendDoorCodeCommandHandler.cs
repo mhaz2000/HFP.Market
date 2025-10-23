@@ -1,5 +1,6 @@
 ﻿using HFP.Shared.Abstractions.Commands;
 using HFP.Shared.Abstractions.Exceptions;
+using Microsoft.Extensions.Configuration;
 
 namespace HFP.Application.Commands.Interactive.Handlers
 {
@@ -7,14 +8,17 @@ namespace HFP.Application.Commands.Interactive.Handlers
     {
         private readonly HttpClient _httpClient;
 
-        public SendDoorCodeCommandHandler(HttpClient httpClient)
+        private readonly string _resberyAddress;
+
+        public SendDoorCodeCommandHandler(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            _resberyAddress = configuration["ResberyAddress"] ?? throw new Exception("Resbery address is invalid!");
         }
 
         public async Task Handle(SendDoorCodeCommand request, CancellationToken cancellationToken)
         {
-            var url = $"http://localhost:6000/door-to-open/{request.doorCode}";
+            var url = $"http://{_resberyAddress}/door-to-open/{request.doorCode}";
 
             var response = await _httpClient.PostAsync(url, null, cancellationToken);
 

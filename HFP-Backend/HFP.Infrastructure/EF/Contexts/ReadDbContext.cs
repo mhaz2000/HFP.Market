@@ -15,7 +15,7 @@ namespace HFP.Infrastructure.EF.Contexts
         public DbSet<DiscountReadModel> Discounts { get; set; }
         public DbSet<UserRoleReadModel> UserRoles { get; set; }
         public DbSet<TransactionReadModel> Transactions { get; set; }
-        public DbSet<WarehousemanReadModel> Warehousemen { get; set; }
+        public DbSet<ConsumerReadModel> Consumers { get; set; }
         public DbSet<DiscountBuyerReadModel> DiscountBuyers { get; set; }
         public DbSet<PurchaseInvoiceReadModel> PurchaseInvoices { get; set; }
         public DbSet<ProductTransactionReadModel> ProductTransactions { get; set; }

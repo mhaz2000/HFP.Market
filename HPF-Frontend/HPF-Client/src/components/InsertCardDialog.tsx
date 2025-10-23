@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, Typography, Box, Button } from '@mui/material';
-import { CreditCard } from '@mui/icons-material';
+import { CreditCard, ErrorOutline } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { connection, startConnection } from '../lib/SystemHub';
 import { openDoor } from '../api/interactive';
@@ -10,15 +10,20 @@ interface InsertCardDialogProps {
 }
 
 const InsertCardDialog = ({ open, onClose }: InsertCardDialogProps) => {
-    debugger
     const [askWhichDoorToOpen, setAskWhichDoorToOpen] = useState<boolean>(false);
-    const [loadingDoor, setLoadingDoor] = useState<number | null>(null); // which door is being opened
+    const [loadingDoor, setLoadingDoor] = useState<number | null>(null);
+    const [accessDenied, setAccessDenied] = useState<boolean>(false); // <-- new state
 
     useEffect(() => {
         startConnection();
 
-        connection.on('CardInserted', (data: boolean) => {
-            setAskWhichDoorToOpen(data);
+        connection.on('CardInserted', (data: { hasAccess: boolean | null; isAdmin: boolean }) => {
+            if (data.hasAccess === true) {
+                setAskWhichDoorToOpen(data.isAdmin);
+                if (!data.isAdmin) onClose(true);
+            } else {
+                setAccessDenied(true);
+            }
         });
 
         return () => {
@@ -34,13 +39,18 @@ const InsertCardDialog = ({ open, onClose }: InsertCardDialogProps) => {
             console.error('Error opening door:', err);
         } finally {
             setLoadingDoor(null);
-            setAskWhichDoorToOpen(false)
-            onClose(doorCode == 1);
+            setAskWhichDoorToOpen(false);
+            onClose(doorCode === 1);
         }
     };
 
+    const handleReset = () => {
+        setAccessDenied(false);
+        setAskWhichDoorToOpen(false);
+    };
+
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={() => onClose(false)}>
             <DialogTitle bgcolor="primary.main" color="primary.contrastText">
                 بازگشایی درب‌ها
             </DialogTitle>
@@ -54,7 +64,18 @@ const InsertCardDialog = ({ open, onClose }: InsertCardDialogProps) => {
                     alignItems="center"
                     gap={2}
                 >
-                    {!askWhichDoorToOpen ? (
+                    {/* Access Denied Message */}
+                    {accessDenied ? (
+                        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+                            <ErrorOutline sx={{ color: 'red', fontSize: '3rem' }} />
+                            <Typography variant="h6" color="error">
+                                شما دسترسی لازم برای ورود به فروشگاه را ندارید.
+                            </Typography>
+                            <Button onClick={handleReset} variant="outlined">
+                                تلاش مجدد
+                            </Button>
+                        </Box>
+                    ) : !askWhichDoorToOpen ? (
                         <>
                             <Box sx={{ position: 'relative', width: 60, height: 60 }}>
                                 <CreditCard

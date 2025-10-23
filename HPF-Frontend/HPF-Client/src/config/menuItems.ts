@@ -76,8 +76,8 @@ const menuItems: MenuItem[] = [
     ]
   },
   {
-    title: 'انبارداران',
-    path: '/dashboard/warehousemen',
+    title: 'کاربران',
+    path: '/dashboard/consumers',
     icon: 'material-symbols:engineering',
   }
   // {

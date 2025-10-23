@@ -27,7 +27,7 @@ namespace HFP.Application.Commands.Discounts.Handlers
         public async Task<AppliedDiscountDto> Handle(ApplyDiscountCommand request, CancellationToken cancellationToken)
         {
             var discount = await _repository.GetWithInclueAsync(t => !t.IsDeleted && t.Code == request.Code &&
-                t.Date.StartDate < DateTime.Now && t.Date.EndDate > DateTime.Now);
+                t.Date.StartDate < DateTime.UtcNow && t.Date.EndDate > DateTime.UtcNow);
 
             if (discount is null)
                 throw new BusinessException("کد تخفیف نامعتبر است.");

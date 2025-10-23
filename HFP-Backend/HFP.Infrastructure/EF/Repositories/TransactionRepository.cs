@@ -17,6 +17,13 @@ namespace HFP.Infrastructure.EF.Repositories
             => _context.Transactions.Include(c => c.Products).ThenInclude(c => c.Product)
                 .FirstOrDefaultAsync(predicate);
 
+        public async Task SetPendingTransactionAsCanceledAsync()
+        {
+            await _context.Transactions
+                .Where(t => t.Status == Domain.Consts.TransactionStatus.Pending)
+                .ExecuteUpdateAsync(t => t.SetProperty(p => p.Status, Domain.Consts.TransactionStatus.Canceled));
+        }
+
         public async Task UpdateTransactionAsync(Transaction transaction)
         {
             foreach (var item in transaction.Products)
@@ -26,7 +33,7 @@ namespace HFP.Infrastructure.EF.Repositories
                 else
                     await _context.ProductTransactions.AddAsync(item);
             }
-            transaction.Date = DateTime.Now;
+            transaction.Date = DateTime.UtcNow;
             _context.Update(transaction);
 
             await _context.SaveChangesAsync();

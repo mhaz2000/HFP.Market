@@ -22,34 +22,33 @@ const WaitToPayDialog = ({ open, onClose, buyerId }: WaitToPayDialogProps) => {
     const [isPaying, setIsPaying] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const handlePayment = async () => {
+        setIsPaying(true);
+        setError(null);
+
+        try {
+            const result = await payInvoice(buyerId);
+
+            if (result.isSuccess) {
+                // Success
+                setTimeout(() => {
+                    onClose();
+                }, 2000);
+            } else {
+                // Failed
+                setError(result.errorMessage);
+            }
+        } catch (err) {
+            setError('خطا در برقراری ارتباط با سرور.');
+        } finally {
+            setIsPaying(false);
+        }
+    };
+
     useEffect(() => {
         if (!open) return;
-
-        const handlePayment = async () => {
-            setIsPaying(true);
-            setError(null);
-
-            try {
-                const result = await payInvoice(buyerId);
-
-                if (result.isSuccess) {
-                    // Success
-                    setTimeout(() => {
-                        onClose();
-                    }, 2000);
-                } else {
-                    // Failed
-                    setError(result.errorMessage);
-                }
-            } catch (err) {
-                setError('خطا در برقراری ارتباط با سرور.');
-            } finally {
-                setIsPaying(false);
-            }
-        };
-
         handlePayment();
-    }, [open, buyerId, onClose]);
+    }, [open, buyerId]);
 
     return (
         <Dialog
@@ -57,7 +56,7 @@ const WaitToPayDialog = ({ open, onClose, buyerId }: WaitToPayDialogProps) => {
             onClose={onClose}
             slotProps={{
                 paper: {
-                    sx: { minWidth: 400 } // 👈 sets minimum width
+                    sx: { minWidth: 400 }
                 }
             }}
         >
@@ -89,24 +88,28 @@ const WaitToPayDialog = ({ open, onClose, buyerId }: WaitToPayDialogProps) => {
                             <Typography color="error" variant="body1">
                                 {error}
                             </Typography>
+                            <Button
+                                onClick={handlePayment}
+                                variant="contained"
+                                color="secondary"
+                                sx={{ mt: 2, minWidth: 120 }}
+                            >
+                                تلاش مجدد
+                            </Button>
+                            <Button
+                                onClick={onClose}
+                                variant="contained"
+                                color="primary"
+                                sx={{ mt: 1, minWidth: 120 }}
+                            >
+                                بستن
+                            </Button>
                         </>
                     ) : (
                         <>
                             <CircularProgress />
                             <Typography variant="body1">در حال بررسی وضعیت پرداخت...</Typography>
                         </>
-                    )}
-
-                    {/* 👇 Show Close button only when not paying */}
-                    {!isPaying && (
-                        <Button
-                            onClick={onClose}
-                            variant="contained"
-                            color="primary"
-                            sx={{ mt: 2, minWidth: 120 }}
-                        >
-                            بستن
-                        </Button>
                     )}
                 </Box>
             </DialogContent>

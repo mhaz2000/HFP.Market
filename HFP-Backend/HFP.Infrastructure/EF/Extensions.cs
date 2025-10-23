@@ -20,13 +20,13 @@ namespace HFP.Infrastructure.EF
 
             var options = configuration.GetOptions<SqlOptions>("Sql");
 
-            services.AddDbContext<ReadDbContext>(ctx => ctx.UseSqlServer(options.ConnectionString));
-            services.AddDbContext<WriteDbContext>(ctx => ctx.UseSqlServer(options.ConnectionString));
+            services.AddDbContext<ReadDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
+            services.AddDbContext<WriteDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
 
             services.AddScoped<IUserReadService, UserReadService>();
             services.AddScoped<IRoleReadService, RoleReadService>();
             services.AddScoped<IProductReadService, ProductReadService>();
-            services.AddScoped<IWarehousemanReadService, WarehousemanReadService>();
+            services.AddScoped<IConsumerReadService, ConsumerReadService>();
             services.AddScoped<ITransactionReadService, TransactionReadService>();
 
 

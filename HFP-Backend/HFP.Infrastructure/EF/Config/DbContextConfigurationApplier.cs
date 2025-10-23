@@ -6,7 +6,7 @@ using HFP.Infrastructure.EF.Config.PurchaseInvoices;
 using HFP.Infrastructure.EF.Config.Shelves;
 using HFP.Infrastructure.EF.Config.Transactions;
 using HFP.Infrastructure.EF.Config.Users;
-using HFP.Infrastructure.EF.Config.Warehousemen;
+using HFP.Infrastructure.EF.Config.Consumers;
 using HFP.Infrastructure.EF.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +21,7 @@ namespace HFP.Infrastructure.EF.Config
             modelBuilder.ApplyConfiguration<UserRoleReadModel>(new UserReadEntityConfiguration());
 
             modelBuilder.ApplyConfiguration(new BuyerReadEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new WarehousemanReadEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ConsumerReadEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ShelfReadEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ProductReadEntityConfiguration());
             modelBuilder.ApplyConfiguration<DiscountReadModel>(new DiscountReadEntityConfiguration());
@@ -38,7 +38,7 @@ namespace HFP.Infrastructure.EF.Config
             modelBuilder.ApplyConfiguration(new ShelfWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration(new BuyerWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ProductWriteEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new WarehousemanWriteEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ConsumerWriteEntityConfiguration());
 
             modelBuilder.ApplyConfiguration<User>(new UserWriteEntityConfiguration());
             modelBuilder.ApplyConfiguration<Role>(new UserWriteEntityConfiguration());

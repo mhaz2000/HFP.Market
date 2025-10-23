@@ -8,6 +8,6 @@ namespace HFP.Domain.Repositories
     {
         Task UpdateTransactionAsync(Transaction transaction);
         Task<Transaction?> GetWithInclueAsync(Expression<Func<Transaction, bool>> predicate);
-
+        Task SetPendingTransactionAsCanceledAsync();
     }
 }

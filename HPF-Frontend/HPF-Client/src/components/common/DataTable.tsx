@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { FirstPage, LastPage, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { ApiResponse, DefaultParams } from '../../types/api';
+import { toPersianNumber } from '../../lib/PersianNumberConverter';
 
 export interface Column<T> {
     key: keyof T;
@@ -172,7 +173,7 @@ export default function DataTable<T>({
                     rowsPerPageOptions={rowsPerPageOptions}
                     labelRowsPerPage="تعداد سطر در هر صفحه:"
                     labelDisplayedRows={({ from, to, count }) =>
-                        `${from}–${to} از ${count !== -1 ? count : `بیش از ${to}`}`
+                        `${toPersianNumber(from)}–${toPersianNumber(to)} از ${count !== -1 ? toPersianNumber(count) : `بیش از ${toPersianNumber(to)}`}`
                     }
                     dir="rtl"
                     sx={{

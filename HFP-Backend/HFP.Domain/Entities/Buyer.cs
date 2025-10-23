@@ -5,9 +5,9 @@ namespace HFP.Domain.Entities
 {
     public class Buyer : AggregateRoot<Guid>
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public BuyerId BuyerId { get; set; }
+        public string? FirstName { get; private set; }
+        public string? LastName { get; private set; }
+        public BuyerId BuyerId { get; private set; }
 
 
         private readonly List<DiscountBuyer> discounts = new List<DiscountBuyer>();

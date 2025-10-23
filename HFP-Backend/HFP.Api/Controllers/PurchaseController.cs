@@ -26,14 +26,14 @@ namespace HFP.Api.Controllers
             _hubContext = hubContext;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddToCart([FromBody] AddProductToCartCommand command)
+        [HttpPost("{code}")]
+        public async Task<IActionResult> AddToCart([FromRoute] string code)
         {
-            var result = await _commandDispatcher.DispatchAsync<AddProductToCartCommand, bool>(command);
-            if (result)
+            var result = await _commandDispatcher.DispatchAsync<AddProductToCartCommand, string?>(new AddProductToCartCommand(code));
+            if (result is not null)
                 await _hubContext.Clients.All.SendAsync("ShowInvoice", new
                 {
-                    data = command.BuyerId
+                    data = result
                 });
 
             return BaseOk();

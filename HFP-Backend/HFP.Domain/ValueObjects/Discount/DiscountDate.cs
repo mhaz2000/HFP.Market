@@ -15,7 +15,7 @@ namespace HFP.Domain.ValueObjects.Discount
             if ((end - start).TotalHours < 1)
                 throw new BusinessException("مدت اعتبار کد تخفیف باید بیش از یک ساعت باشد.");
 
-            if(start.Date < DateTime.Now.Date)
+            if(start.Date < DateTime.UtcNow.Date)
                 throw new BusinessException("زمان شروع اعتبار کد تحفیف باید جلو تر از تاریخ حال حاضر باشد.");
 
             StartDate = start;

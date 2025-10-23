@@ -12,6 +12,7 @@ namespace HFP.Infrastructure.Profiles
         public TransactionMappingProfile()
         {
             var pc = new PersianCalendar();
+            var iranTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Iran Standard Time");
 
             CreateMap<ProductTransaction, ProductTransactionDto>()
                 .ConstructUsing(tr => new ProductTransactionDto()
@@ -26,11 +27,13 @@ namespace HFP.Infrastructure.Profiles
                 .ConstructUsing(tr => new TransactionDto()
                 {
                     BuyerId = tr.BuyerId,
-                    DateTime = $"{pc.GetYear(tr.Date):0000}/{pc.GetMonth(tr.Date):00}/{pc.GetDayOfMonth(tr.Date):00} - {pc.GetHour(tr.Date):00}:{pc.GetMinute(tr.Date):00}",
-                    Price = tr.ProductTransactions.Sum(p=> p.Quantity * p.Product.Price),
+                    DateTime = $"{pc.GetYear(TimeZoneInfo.ConvertTimeFromUtc(tr.Date, iranTimeZone)):0000}/" +
+                                   $"{pc.GetMonth(TimeZoneInfo.ConvertTimeFromUtc(tr.Date, iranTimeZone)):00}/" +
+                                   $"{pc.GetDayOfMonth(TimeZoneInfo.ConvertTimeFromUtc(tr.Date, iranTimeZone)):00} - " +
+                                   $"{pc.GetHour(TimeZoneInfo.ConvertTimeFromUtc(tr.Date, iranTimeZone)):00}:{pc.GetMinute(TimeZoneInfo.ConvertTimeFromUtc(tr.Date, iranTimeZone)):00}",
+                    Price = tr.ProductTransactions.Sum(p => p.Quantity * p.Product.Price),
                     TransactionId = tr.Id
                 });
-
         }
 
     }
